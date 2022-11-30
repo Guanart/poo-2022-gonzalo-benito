@@ -1,0 +1,56 @@
+<diagram program="umletino" version="15.0.0"><zoom_level>9</zoom_level><element><id>UMLClass</id><coordinates><x>1062</x><y>198</y><w>117</w><h>81</h></coordinates><panel_attributes>Dado
+-
+- numeroAleatorio
+-
++ tirar()
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>765</x><y>162</y><w>180</w><h>153</h></coordinates><panel_attributes>Juego
+-
+- Turno
+- Tablero: ArrayList&lt;Casilla&gt;
+- Jugadores: ArraylList&lt;Jugador&gt;
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>999</x><y>342</y><w>108</w><h>72</h></coordinates><panel_attributes>Jugador
+-
+- Ficha: Fichas
+- Posicion: Integer</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>81</x><y>342</y><w>135</w><h>63</h></coordinates><panel_attributes>Vista
+Consola
+-
++ nuevaPartida(): void</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>999</x><y>486</y><w>90</w><h>99</h></coordinates><panel_attributes>&lt;&lt;enum&gt;&gt;
+Fichas
+-
+_+ROJA_
+_+AMARILLA_
+_+AZUL_
+_+VERDE_
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>819</x><y>81</y><w>90</w><h>36</h></coordinates><panel_attributes>Casilla
+-
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>855</x><y>108</y><w>27</w><h>72</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;60;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>819</x><y>0</y><w>90</w><h>36</h></coordinates><panel_attributes>CasillaEspecial
+-
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>936</x><y>279</y><w>117</w><h>81</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;110;10;110;70</additional_attributes></element><element><id>UMLClass</id><coordinates><x>531</x><y>162</y><w>180</w><h>153</h></coordinates><panel_attributes>&lt;&lt;interface&gt;&gt;
+IJuego
+-
+- Turno
+- Tablero: ArrayList&lt;Casilla&gt;
+- Jugadores: ArraylList&lt;Jugador&gt;
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>90</x><y>189</y><w>117</w><h>108</h></coordinates><panel_attributes>&lt;&lt;interface&gt;&gt;
+IVista
+-
++ iniciar()
++ setControlador()
++ mostrarMenu()
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>135</x><y>288</y><w>27</w><h>72</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;10;10;60</additional_attributes></element><element><id>UMLClass</id><coordinates><x>315</x><y>162</y><w>153</w><h>153</h></coordinates><panel_attributes>Controlador
+-
+- Vistas: ArrayList&lt;IVista&gt;
+-
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1035</x><y>405</y><w>27</w><h>99</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>10;90;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>702</x><y>234</y><w>81</w><h>27</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;10;70;10</additional_attributes></element><element><id>Relation</id><coordinates><x>459</x><y>216</y><w>90</w><h>27</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>80;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>198</x><y>207</y><w>135</w><h>36</h></coordinates><panel_attributes>lt=&lt;-
+*</panel_attributes><additional_attributes>10;20;130;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>315</x><y>360</y><w>171</w><h>153</h></coordinates><panel_attributes>&lt;&lt;interface&gt;&gt;
+Observador
+-
++ notificar(Observable, Evento)
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>765</x><y>360</y><w>189</w><h>153</h></coordinates><panel_attributes>&lt;&lt;interface&gt;&gt;
+Observable
+-
++ agregarObservador(Observador)
++ notificarObservadores(Evento)
+
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>846</x><y>306</y><w>27</w><h>72</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;60;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>378</x><y>306</y><w>27</w><h>72</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;60;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>936</x><y>207</y><w>144</w><h>27</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>140;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>855</x><y>27</y><w>27</w><h>72</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;60;10;10</additional_attributes></element></diagram>
