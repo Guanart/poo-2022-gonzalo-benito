@@ -1,0 +1,12 @@
+package ar.edu.unlu.oca.controlador;
+
+public enum Eventos {
+	COMENZAR_PARTIDA,
+	JUGADOR_AGREGADO,
+	LIMITE_JUGADORES,
+	TURNO_TERMINADO,
+	TIRAR_DADOS,
+	TIRAR_DE_NUEVO,
+	FIN_JUEGO,
+	MOSTRAR_CASILLA_DADOS, CASILLA,
+}
