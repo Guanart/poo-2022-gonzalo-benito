@@ -1,11 +1,7 @@
-package ar.edu.unlu.oca.controlador;
+package ar.edu.unlu.oca.modelo;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
-
-import ar.edu.unlu.oca.modelo.Ficha;
-import ar.edu.unlu.oca.modelo.IJugador;
-import ar.edu.unlu.oca.modelo.Jugador;
 
 public interface IJuego {
 	// Configuración

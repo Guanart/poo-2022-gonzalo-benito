@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 
 import ar.edu.unlu.oca.modelo.Ficha;
+import ar.edu.unlu.oca.modelo.IJuego;
 import ar.edu.unlu.oca.utils.Observable;
 import ar.edu.unlu.oca.utils.Observador;
 import ar.edu.unlu.oca.vista.IVista;

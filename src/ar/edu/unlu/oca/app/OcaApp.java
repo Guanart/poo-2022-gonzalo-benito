@@ -1,7 +1,7 @@
 package ar.edu.unlu.oca.app;
 
 import ar.edu.unlu.oca.controlador.Controlador;
-import ar.edu.unlu.oca.controlador.IJuego;
+import ar.edu.unlu.oca.modelo.IJuego;
 import ar.edu.unlu.oca.modelo.Juego;
 import ar.edu.unlu.oca.vista.IVista;
 import ar.edu.unlu.oca.vista.VistaConsola;
