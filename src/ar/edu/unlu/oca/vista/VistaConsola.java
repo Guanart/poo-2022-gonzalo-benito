@@ -15,14 +15,15 @@ import ar.edu.unlu.oca.modelo.IJugador;
 
 public class VistaConsola extends JFrame implements IVista {
 
-	/**
+	/*
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	private VentanaPrincipal vPrincipal;
 	private Controlador controlador;
 	private Enum<?> estadoActual = OpcionesMenuPrincipal.INICIO;
-	private String nombreJugadorActual = "-1";
+	// Durante la carga de jugadores, utilizo:
+	private String nombreJugadorActual = "-1";	
 	private int nroJugadores = -1;
 	private String fichaJugadorActual;
 

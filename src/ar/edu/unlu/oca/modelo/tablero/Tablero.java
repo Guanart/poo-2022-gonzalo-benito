@@ -32,7 +32,7 @@ public class Tablero {
     // Sumar el número de la casilla y el número de la tirada y avanzar la cantidad resultante
     private final ArrayList<Integer> CASILLAS_DADO = new ArrayList<Integer>(Arrays.asList(26, 53));
     // Avanza a la siguiente casilla OCA
-    private final ArrayList<Integer> CASILLAS_OCA_L = new ArrayList<Integer>(Arrays.asList(5, 9, 14, 18, 23, 27, 32, 36, 41, 45, 50, 54, 59));
+    private final ArrayList<Integer> CASILLAS_OCA = new ArrayList<Integer>(Arrays.asList(5, 9, 14, 18, 23, 27, 32, 36, 41, 45, 50, 54, 59));
     // Avanza a casilla posada y pierde un turno
     private final ArrayList<Integer> CASILLAS_PUENTE = new ArrayList<Integer>(Arrays.asList(6, 12));
     
@@ -43,7 +43,7 @@ public class Tablero {
 			Casilla casilla;
 			if (CASILLAS_DADO.contains(i)) {
 				casilla = new CasillaDado(i);
-			} else if (CASILLAS_OCA_L.contains(i)) {
+			} else if (CASILLAS_OCA.contains(i)) {
 				casilla = new CasillaOca(i);
 			} else if (CASILLAS_PUENTE.contains(i)) {
 				casilla = new CasillaPuente(i);

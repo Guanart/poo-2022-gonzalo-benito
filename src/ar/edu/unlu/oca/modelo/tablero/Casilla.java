@@ -1,6 +1,6 @@
 package ar.edu.unlu.oca.modelo.tablero;
 
-import ar.edu.unlu.oca.modelo.IJugador;
+import ar.edu.unlu.oca.modelo.Jugador;
 
 public class Casilla {
 
@@ -25,7 +25,7 @@ public class Casilla {
 		return posicion;
 	}
 
-	public String accion(IJugador jugador) {
+	public String accion(Jugador jugador) {
 		return descripcion;
 	}
 	

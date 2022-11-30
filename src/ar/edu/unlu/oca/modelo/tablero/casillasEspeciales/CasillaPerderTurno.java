@@ -1,6 +1,6 @@
 package ar.edu.unlu.oca.modelo.tablero.casillasEspeciales;
 
-import ar.edu.unlu.oca.modelo.IJugador;
+import ar.edu.unlu.oca.modelo.Jugador;
 import ar.edu.unlu.oca.modelo.tablero.Casilla;
 
 public class CasillaPerderTurno extends Casilla {
@@ -20,7 +20,7 @@ public class CasillaPerderTurno extends Casilla {
 		}
 	}
 
-	public String accion(IJugador jugador) {
+	public String accion(Jugador jugador) {
 		jugador.incTurnoPerdido(cantTurnos);
 		return getDescripcion();
 	}

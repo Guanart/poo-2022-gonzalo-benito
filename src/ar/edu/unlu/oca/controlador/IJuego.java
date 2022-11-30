@@ -5,6 +5,7 @@ import java.util.EnumSet;
 
 import ar.edu.unlu.oca.modelo.Ficha;
 import ar.edu.unlu.oca.modelo.IJugador;
+import ar.edu.unlu.oca.modelo.Jugador;
 
 public interface IJuego {
 	// Configuración
