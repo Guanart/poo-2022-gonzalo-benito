@@ -1,0 +1,194 @@
+<diagram program="umletino" version="15.0.0"><zoom_level>7</zoom_level><element><id>UMLClass</id><coordinates><x>889</x><y>252</y><w>133</w><h>70</h></coordinates><panel_attributes>Dado
+-
+- numeroAleatorio: Random
+- cara: int
+-
++ tirar()
++ getCara()</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>651</x><y>308</y><w>168</w><h>182</h></coordinates><panel_attributes>Juego
+-
+- jugadores: ArraylList&lt;Jugador&gt;
+- observadores: ArraylList&lt;Observador&gt;
+- turnoJugador: int
+- descripcionUltimaCasilla: String
+- ultimaTirada: int
+-
++ iniciarJuego()
++ terminarJuego()
++ cargarJugador(nombre, color)
++ fichasDisponibles(): EnumSet&lt;Fichas&gt;
++ mostrarDado(): String
++ jugarTurno()
+- siguienteJugador()
++ getDescripcionUltimaCasilla()
++ agregarObservador(observador)
++ notificarObservadores(evento)</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>875</x><y>413</y><w>161</w><h>245</h></coordinates><panel_attributes>Jugador
+-
+- nombre: String
+- casilla: int
+- turnos: int
+- turnosPerdidos: int
+- ultimaTirada: int
+- gano: boolean
+- estaEnPozo: boolean
+-
++ jugar(dados): int
++ gano(): boolean
++ moverFicha(cantCasillas): int
++ saltarCasilla(nuevaCasilla): int
++ getCasillaActual()
++ getUltimaTirada()
++ darTurno()
++ quitarTurno()
++ tieneTurnos(): boolean
++ tieneTurnosPerdidos(): boolean
++ incTurnoPerdido(turnos)
++ decTurnoPerdido()
++ setPozo()
++ estaEnPozo(): boolean</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>42</x><y>511</y><w>140</w><h>238</h></coordinates><panel_attributes>Vista
+Consola
+-
+- controlador: Controlador
+- estadoActual: Enum&lt;?&gt;
+- nroJugadores: int
+- nombreJugadorActual: String
+- fichaJugadorActual: String
+-
++ iniciar()
++ menuPrincipal()
++ nuevaPartida(): void
++ iniciarPartida()
++ println()
++ clickHandler()
++ cargarJugadores()
++ validarCantJugadores(cantidad)
++ mostrarJugadores()
++ mostrarDados(String)
++ mostrarCasillas()
++ mostrarGanador(IJugador)
++ mostrarTurno(IJugador)
++ mostrarFichas(EnumSet&lt;Ficha&gt;)
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>917</x><y>728</y><w>70</w><h>77</h></coordinates><panel_attributes>&lt;&lt;enum&gt;&gt;
+Fichas
+-
+_+ROJA_
+_+AMARILLA_
+_+AZUL_
+_+VERDE_
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>651</x><y>98</y><w>175</w><h>70</h></coordinates><panel_attributes>Casilla
+-
+- posicion: int
+- descripcion: String
+-
+# appendDescripcion(descripcion: String)
++ accion(jugador: Jugador): String</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>728</x><y>161</y><w>21</w><h>49</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;50;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>448</x><y>49</y><w>140</w><h>49</h></coordinates><panel_attributes>CasillaTransportar
+-
+- nuevaPosicion: int
+-
++ accion(jugador: Jugador): String</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>812</x><y>385</y><w>154</w><h>42</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;200;10;200;40</additional_attributes></element><element><id>UMLClass</id><coordinates><x>56</x><y>329</y><w>98</w><h>140</h></coordinates><panel_attributes>&lt;&lt;interface&gt;&gt;
+IVista
+-
++ iniciar()
++ setControlador()
++ nuevaPartida()
++ mostrarMenu()
++ mostrarGanador()
++ mostrarDado()
++ mostrarCasilla()
++ mostrarTurno()
++ mostrarJugadores()
++ mostrarFichas()</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>98</x><y>462</y><w>21</w><h>63</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;10;10;70</additional_attributes></element><element><id>UMLClass</id><coordinates><x>231</x><y>315</y><w>133</w><h>175</h></coordinates><panel_attributes>Controlador
+-
+- vistas: ArrayList&lt;IVista&gt;
+-
++ agregarVista(IVista modelo)
++ setModelo(IJuego modelo)
++ fichasDisponibles()
++ iniciarPartida()
++ jugarTurno()
++ cargarJugador()
++ mostrarJugadores()
++ cerrarApp()
+- terminarJuego()
+- mostrarGanador()
+- mostrarDados()
+- mostrarCasilla()
+- mostrarTurno()</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>945</x><y>651</y><w>42</w><h>91</h></coordinates><panel_attributes>lt=&lt;-
+m1=1
+- ficha</panel_attributes><additional_attributes>10;110;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>147</x><y>392</y><w>98</w><h>28</h></coordinates><panel_attributes>lt=&lt;-
+*</panel_attributes><additional_attributes>10;20;120;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>357</x><y>518</y><w>133</w><h>42</h></coordinates><panel_attributes>&lt;&lt;interface&gt;&gt;
+Observador
+-
++ notificar(Observable, Evento)
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>658</x><y>539</y><w>147</w><h>56</h></coordinates><panel_attributes>&lt;&lt;interface&gt;&gt;
+Observable
+-
++ agregarObservador(Observador)
++ notificarObservadores(Evento)
+
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>721</x><y>483</y><w>21</w><h>70</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;80;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>308</x><y>483</y><w>63</w><h>63</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>70;70;10;70;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>581</x><y>56</y><w>84</w><h>77</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>100;90;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>665</x><y>196</y><w>147</w><h>56</h></coordinates><panel_attributes>Tablero
+-
+- casillas: ArrayList&lt;Casilla&gt;
+-
++ inicializar()
++ getCasilla(nroCasilla: int): Casilla
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>728</x><y>245</y><w>56</w><h>77</h></coordinates><panel_attributes>lt=&lt;-
+m1=1
+- tablero</panel_attributes><additional_attributes>10;10;10;90</additional_attributes></element><element><id>UMLClass</id><coordinates><x>448</x><y>112</y><w>140</w><h>49</h></coordinates><panel_attributes>CasillaOca
+-
+- nuevaPosicion: int
+-
++ accion(jugador: Jugador): String</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>581</x><y>126</y><w>84</w><h>21</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>100;10;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>602</x><y>7</y><w>140</w><h>35</h></coordinates><panel_attributes>CasillaDado
+-
++ accion(jugador: Jugador): String</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>665</x><y>35</y><w>84</w><h>77</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>100;90;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>763</x><y>0</y><w>140</w><h>49</h></coordinates><panel_attributes>CasillaPerderTurno
+-
+- cantTurnos: int
+-
++ accion(jugador: Jugador): String</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>749</x><y>42</y><w>63</w><h>70</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;80;70;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>910</x><y>56</y><w>140</w><h>49</h></coordinates><panel_attributes>CasillaPuente
+-
+- nuevaPosicion: int
+-
++ accion(jugador: Jugador): String</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>910</x><y>119</y><w>140</w><h>35</h></coordinates><panel_attributes>CasillaPozo
+-
++ accion(jugador: Jugador): String</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>819</x><y>63</y><w>105</w><h>70</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;80;130;10</additional_attributes></element><element><id>Relation</id><coordinates><x>819</x><y>126</y><w>105</w><h>21</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;130;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>427</x><y>343</y><w>168</w><h>119</h></coordinates><panel_attributes>&lt;&lt;interface&gt;&gt;
+IJuego
+-
++ iniciarJuego()
++ cargarJugador(nombre, color)
++ jugarTurno()
++ fichasDisponibles(): EnumSet&lt;Fichas&gt;
++ mostrarDado(): String
++ getDescripcionUltimaCasilla()
++ getJugadores()
++ getJugadorActual()</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>588</x><y>399</y><w>77</w><h>21</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;10;90;10</additional_attributes></element><element><id>Relation</id><coordinates><x>812</x><y>315</y><w>168</w><h>56</h></coordinates><panel_attributes>lt=&lt;-
+m1=1..2
+- dado</panel_attributes><additional_attributes>200;10;200;60;10;60</additional_attributes></element><element><id>Relation</id><coordinates><x>357</x><y>392</y><w>84</w><h>35</h></coordinates><panel_attributes>lt=&lt;-
+m1=1
+- modelo</panel_attributes><additional_attributes>100;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>175</x><y>483</y><w>126</w><h>63</h></coordinates><panel_attributes>lt=&lt;-
+m1=1
+- controlador</panel_attributes><additional_attributes>150;10;150;70;10;70</additional_attributes></element><element><id>UMLClass</id><coordinates><x>56</x><y>266</y><w>105</w><h>35</h></coordinates><panel_attributes>Vista
+Gráfica
+-
+-</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>154</x><y>266</y><w>147</w><h>63</h></coordinates><panel_attributes>lt=&lt;-
+m1=1
+- controlador</panel_attributes><additional_attributes>180;70;180;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>98</x><y>294</y><w>21</w><h>49</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;50;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>448</x><y>203</y><w>119</w><h>98</h></coordinates><panel_attributes>&lt;&lt;enum&gt;&gt;
+Eventos
+-
+_+COMENZAR_PARTIDA_
+_+FIN_JUEGO_
+_+JUGADOR_AGREGADO_
+_+LIMITE_JUGADORES_
+_+TURNO_TERMINADO_
+_+MOSTRAR_CASILLA_DADOS_
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>322</x><y>266</y><w>140</w><h>63</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>180;10;10;10;10;70</additional_attributes></element><element><id>Relation</id><coordinates><x>560</x><y>266</y><w>154</w><h>56</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>10;10;200;10;200;60</additional_attributes></element><element><id>UMLClass</id><coordinates><x>651</x><y>679</y><w>161</w><h>63</h></coordinates><panel_attributes>&lt;&lt;interface&gt;&gt;
+IJugador
+-
++ getCasillaActual()
++ getNombre(): String
++ getFicha(): Ficha</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>231</x><y>581</y><w>119</w><h>49</h></coordinates><panel_attributes>&lt;&lt;enum&gt;&gt;
+OpcionesMenu
+-
++ opcion: int
++ label: String
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>287</x><y>483</y><w>21</w><h>112</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>10;10;10;140</additional_attributes></element><element><id>Relation</id><coordinates><x>728</x><y>616</y><w>161</w><h>77</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;90;10;10;210;10</additional_attributes></element><element><id>Relation</id><coordinates><x>175</x><y>707</y><w>490</w><h>21</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>680;10;10;10</additional_attributes></element></diagram>
