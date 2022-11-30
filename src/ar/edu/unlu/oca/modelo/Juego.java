@@ -3,7 +3,6 @@ package ar.edu.unlu.oca.modelo;
 import java.util.ArrayList;
 import java.util.EnumSet;
 
-import ar.edu.unlu.oca.controlador.Controlador;
 import ar.edu.unlu.oca.controlador.Eventos;
 import ar.edu.unlu.oca.controlador.IJuego;
 import ar.edu.unlu.oca.modelo.tablero.Tablero;
@@ -15,12 +14,11 @@ public class Juego implements Observable, IJuego {
 
 	private Dado dado = new Dado();
 	private Tablero tablero = new Tablero();
-	private ArrayList<IJugador> jugadores = new ArrayList<IJugador>();
+	private ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
 	private ArrayList<Observador> observadores = new ArrayList<Observador>();
 	private int turnoJugador = 0;
 	private Jugador jugadorActual;
 	private String descripcionUltimaCasilla;
-	private int ultimaTirada;
 	
 	public Juego() {
 		// TODO Auto-generated constructor stub
@@ -58,13 +56,13 @@ public class Juego implements Observable, IJuego {
 
 	@Override
 	public ArrayList<IJugador> getJugadores() {
-		return jugadores;
+		return new ArrayList<IJugador>(jugadores);
 	}
 
 	@Override
 	public EnumSet<Ficha> fichasDisponibles() {
 		EnumSet<Ficha> fichasDisponibles = EnumSet.allOf(Ficha.class);
-		for (IJugador jugador : jugadores) {
+		for (Jugador jugador : jugadores) {
 			if (fichasDisponibles.contains(jugador.getFicha())) {
 				fichasDisponibles.remove(jugador.getFicha());
 			}
@@ -85,11 +83,10 @@ public class Juego implements Observable, IJuego {
 	}
 	
 	private void terminarJuego() {
-//		jugadores = new ArrayList<IJugador>();
+		jugadores = new ArrayList<Jugador>();
 		turnoJugador = 0;
 		jugadorActual = null;
 		descripcionUltimaCasilla = null;
-		ultimaTirada = -1;
 	}
 
 	@Override
@@ -106,15 +103,14 @@ public class Juego implements Observable, IJuego {
 
 	@Override
 	public void jugarTurno() {	
-		jugadorActual = (Jugador) jugadores.get(turnoJugador);
+		jugadorActual = jugadores.get(turnoJugador);
 		int nuevaPosicion = jugadorActual.jugar(dado.tirar());
 		
 		// CASILLA POZO
 		if ((nuevaPosicion>=31) && (nuevaPosicion-jugadorActual.getUltimaTirada())<31) {
-			for (IJugador jugador : jugadores) {
+			for (Jugador jugador : jugadores) {
 				jugador.liberarDelPozo();
-			}
-				
+			}		
 		}
 		
 		descripcionUltimaCasilla = tablero.getCasilla(nuevaPosicion).accion(jugadorActual); 
@@ -128,12 +124,13 @@ public class Juego implements Observable, IJuego {
 		else if (!jugadorActual.tieneTurnos() || jugadorActual.estaEnPozo()) {
 			siguienteJugador();
 		}
+		
 		notificarObservadores(Eventos.TURNO_TERMINADO);
 	}
 
 	void siguienteJugador() {
 		turnoJugador = (turnoJugador+1) % jugadores.size();
-		Jugador sigJugador = (Jugador) jugadores.get(turnoJugador);
+		Jugador sigJugador = jugadores.get(turnoJugador);
 		if (sigJugador.tieneTurnosPerdidos()) {
 			sigJugador.decTurnoPerdido();
 			siguienteJugador();

@@ -2,7 +2,7 @@ package ar.edu.unlu.oca.modelo.tablero.casillasEspeciales;
 
 import java.util.HashMap;
 
-import ar.edu.unlu.oca.modelo.IJugador;
+import ar.edu.unlu.oca.modelo.Jugador;
 import ar.edu.unlu.oca.modelo.tablero.Casilla;
 
 public class CasillaOca extends Casilla {
@@ -29,7 +29,7 @@ public class CasillaOca extends Casilla {
 		appendDescripcion(" - OCA -> Avanza a la casilla "+Integer.toString(nuevaPosicion)+" (OCA) y vuelve a tirar");
 	}
 	
-	public String accion(IJugador jugador) {
+	public String accion(Jugador jugador) {
 		jugador.saltarCasilla(nuevaPosicion);
 		jugador.darTurno();
 		return getDescripcion();

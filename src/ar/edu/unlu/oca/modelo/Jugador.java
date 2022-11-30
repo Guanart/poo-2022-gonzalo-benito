@@ -7,7 +7,6 @@ public class Jugador implements IJugador {
 	private int turnos = 0;
 	private int turnosPerdidos = 0;
 	private String nombre;
-	private boolean gano; // si ya llegó al final
 	private int ultimaTirada;
 	
 	private final int CASILLA_FINAL = 63;
@@ -19,22 +18,13 @@ public class Jugador implements IJugador {
 		this.casilla = 0;
 		this.turnos = 0;
 		this.nombre = nombre;
-		this.gano = false;
 	}
 
-
-	@Override
-	public String getNombre() {
-		return nombre;
+	public int jugar(int tirada) {
+		quitarTurno(1);
+		return moverFicha(tirada);
 	}
 
-
-	@Override
-	public Ficha getFicha() {
-		return ficha;
-	}
-	
-	@Override
 	public int moverFicha(int cantCasillas) {
 		this.ultimaTirada = cantCasillas;
 		// Estoy en la 61, saco 4 -> debo quedar en la 61
@@ -47,46 +37,6 @@ public class Jugador implements IJugador {
 		return casilla;
 	}
 	
-	@Override
-	public int saltarCasilla(int nuevaCasilla) {
-		this.casilla = nuevaCasilla;
-		return casilla;
-	}
-	
-	@Override
-	public void darTurno() {
-		++turnos;
-	}
-	
-	@Override
-	public void quitarTurno(int cantTurnos) {
-		turnos -= cantTurnos;
-	}
-
-	@Override
-	public int getCasillaActual() {
-		return casilla;
-	}
-
-	public void setPozo() {
-		estaEnPozo = true;
-	}
-	
-	@Override
-	public boolean estaEnPozo() {
-		return estaEnPozo;
-	}
-	
-	@Override
-	public void liberarDelPozo() {
-		estaEnPozo = false;
-	}
-
-	@Override
-	public int getUltimaTirada() {
-		return this.ultimaTirada;
-	}
-	
 	public boolean gano() {
 		return casilla==CASILLA_FINAL;
 	}
@@ -94,34 +44,63 @@ public class Jugador implements IJugador {
 	public boolean tieneTurnos() {
 		return turnos > 0;
 	}
-
-
-	@Override
-	public int jugar(int tirada) {
-		quitarTurno(1);
-		return moverFicha(tirada);
+	
+	public void darTurno() {
+		++turnos;
+	}
+	
+	public void quitarTurno(int cantTurnos) {
+		turnos -= cantTurnos;
+	}
+	
+	public int saltarCasilla(int nuevaCasilla) {
+		this.casilla = nuevaCasilla;
+		return casilla;
 	}
 
+	public void setPozo() {
+		estaEnPozo = true;
+	}
+	
+	public boolean estaEnPozo() {
+		return estaEnPozo;
+	}
+	
+	public void liberarDelPozo() {
+		estaEnPozo = false;
+	}
 
+	public int getUltimaTirada() {
+		return this.ultimaTirada;
+	}
+	
 	public boolean tieneTurnosPerdidos() {
 		return turnosPerdidos > 0;
 	}
 
-	@Override
 	public void incTurnoPerdido(int turnos) {
 		turnosPerdidos += turnos;
 	}
 
-	@Override
 	public void decTurnoPerdido() {
 		--turnosPerdidos;
 	}
 
+
+	// INTERFACE
 	@Override
-	public void cayoEnPozo() {
-		// TODO Auto-generated method stub
-		
+	public int getCasillaActual() {
+		return casilla;
 	}
 
-	
+	@Override
+	public String getNombre() {
+		return nombre;
+	}
+
+	@Override
+	public Ficha getFicha() {
+		return ficha;
+	}
+
 }

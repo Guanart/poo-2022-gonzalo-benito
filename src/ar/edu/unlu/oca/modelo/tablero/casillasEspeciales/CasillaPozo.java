@@ -1,6 +1,5 @@
 package ar.edu.unlu.oca.modelo.tablero.casillasEspeciales;
 
-import ar.edu.unlu.oca.modelo.IJugador;
 import ar.edu.unlu.oca.modelo.Jugador;
 import ar.edu.unlu.oca.modelo.tablero.Casilla;
 
@@ -11,7 +10,7 @@ public class CasillaPozo extends Casilla {
 		appendDescripcion(" - POZO -> El jugador no podrá moverse hasta que otro jugador lo libere (que pase por la casilla POZO)");
 	}
 	
-	public String accion(IJugador jugador) {
+	public String accion(Jugador jugador) {
 		jugador.setPozo();
 		return getDescripcion();
 	}

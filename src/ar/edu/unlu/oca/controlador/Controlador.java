@@ -40,9 +40,7 @@ public class Controlador implements Observador {
 			mostrarTurno();
 			break;
 		case LIMITE_JUGADORES:
-			break;
-		case TIRAR_DADOS:
-			mostrarTurno();
+			
 			break;
 		case MOSTRAR_CASILLA_DADOS:
 			mostrarDados();
@@ -51,9 +49,6 @@ public class Controlador implements Observador {
 		case TURNO_TERMINADO:
 			mostrarTurno();
 			break;
-		case CASILLA:	// en realidad muestra todas las casillas
-			mostrarCasilla();
-			break;
 		case FIN_JUEGO:
 			terminarJuego();
 			break;
@@ -61,6 +56,12 @@ public class Controlador implements Observador {
 			break;
 		}
 	}
+
+	/*
+	 * ###########################
+	 * ACTUALIZACIONES DE LA VISTA
+	 * ###########################
+	 */
 
 	
 	// TODO: podría hacer una función que reciba como parámetros los distintos métodos a ejecutar?
@@ -119,15 +120,6 @@ public class Controlador implements Observador {
 		}		
 	}
 
-	public void cargarJugador(String nombre, int color) {
-		try {
-			modelo.cargarJugador(nombre, color);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}		
-	}
-
 	public void mostrarJugadores() {
 		try {
 			for (IVista vista : vistas)
@@ -146,6 +138,30 @@ public class Controlador implements Observador {
 	}
 
 
+	/*
+	 * ###########################
+	 * LLAMADAS AL MODELO
+	 * ###########################
+	 */
+	
+	public void iniciarPartida() {
+		modelo.iniciarJuego();
+	}
+
+	public void jugarTurno() {
+		modelo.jugarTurno();
+	}
+
+	public void cargarJugador(String nombre, int color) {
+		try {
+			modelo.cargarJugador(nombre, color);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+	}
+	
+	// TODO: con RMI, debería cerrar la vista creo
 	public void cerrarApp() {
 		try {
 //			this.modelo.cerrar();  	TODO -> cerrar correctamente, de manera no brusca
@@ -156,14 +172,4 @@ public class Controlador implements Observador {
 		}		
 	}
 
-	public void iniciarPartida() {
-		modelo.iniciarJuego();
-	}
-
-	public void jugarTurno() {
-		modelo.jugarTurno();
-	}
-
-
-	
 }
