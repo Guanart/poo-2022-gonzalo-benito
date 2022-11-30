@@ -11,7 +11,7 @@ Materia: Programación Orientada a Objetos
 
 ## Modo de uso
 
-![image-20221130173918499](README Images/image-20221130173918499.png)
+![image](https://user-images.githubusercontent.com/60377535/204913077-0921d733-bb89-4ef8-b201-637de6d65ff7.png)
 
 - Indicar en el input la opción
 - 1\) Nueva partida
@@ -26,5 +26,5 @@ Materia: Programación Orientada a Objetos
 
 # UML
 
-![UML_REGULAR (1)](README Images/UML_REGULAR (1).png)
+![image](https://user-images.githubusercontent.com/60377535/204913122-7ad4433f-0f35-457b-b626-d2bcd00ecb6d.png)
 
