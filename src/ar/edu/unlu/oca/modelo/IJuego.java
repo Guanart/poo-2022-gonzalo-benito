@@ -8,7 +8,7 @@ import ar.edu.unlu.rmimvc.observer.IObservableRemoto;
 
 public interface IJuego extends IObservableRemoto {
 	// Configuración
-	void cargarJugador(String nombre) throws RemoteException;
+	IJugador cargarJugador(String nombre, int color) throws RemoteException;
 	void iniciarJuego() throws RemoteException;
 	ArrayList<IJugador> getJugadores() throws RemoteException;
 	EnumSet<Ficha> fichasDisponibles() throws RemoteException;

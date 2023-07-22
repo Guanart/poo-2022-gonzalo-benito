@@ -1,9 +1,9 @@
-package ar.edu.unlu.oca.modelo.tablero;
+package ar.edu.unlu.oca.modelo.casillas;
 
 import java.util.ArrayList;
 
 import ar.edu.unlu.oca.modelo.Jugador;
-import ar.edu.unlu.oca.modelo.tablero.casillasEspeciales.Tablero;
+import ar.edu.unlu.oca.modelo.Tablero;
 
 public class Casilla {
 
@@ -30,7 +30,7 @@ public class Casilla {
 	}
 
 	public String accion(Tablero tablero, Jugador jugador) {
-		return descripcion;
+		return this.descripcion;
 	}
 	
 	public String getDescripcion() {
@@ -41,9 +41,9 @@ public class Casilla {
 		this.descripcion = this.descripcion+descripcion;
 	}
 
-	public void agregarJugador(Tablero tablero, Jugador jugador) {
+	public String agregarJugador(Tablero tablero, Jugador jugador) {
 		jugadores.add(jugador);
-		accion(tablero, jugador);
+		return this.accion(tablero, jugador);
 	}
 	
 	public void eliminarJugador(Jugador jugador) {

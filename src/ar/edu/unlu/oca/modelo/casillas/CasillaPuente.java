@@ -1,7 +1,7 @@
-package ar.edu.unlu.oca.modelo.tablero.casillasEspeciales;
+package ar.edu.unlu.oca.modelo.casillas;
 
 import ar.edu.unlu.oca.modelo.Jugador;
-import ar.edu.unlu.oca.modelo.tablero.Casilla;
+import ar.edu.unlu.oca.modelo.Tablero;
 
 public class CasillaPuente extends Casilla {
 	private int nuevaPosicion;
@@ -12,8 +12,8 @@ public class CasillaPuente extends Casilla {
 		appendDescripcion(" - PUENTE -> Avanza a la casilla "+Integer.toString(nuevaPosicion)+" (POSADA) y pierde un turno");
 	}
 	
-	public String accion(Jugador jugador) {
-		jugador.saltarCasilla(nuevaPosicion);
+	public String accion(Tablero tablero, Jugador jugador) {
+		jugador.moverFicha(tablero, this.nuevaPosicion - jugador.getCasillaActual());
 		jugador.incTurnoPerdido(1);
 		return getDescripcion();
 	}

@@ -1,7 +1,7 @@
-package ar.edu.unlu.oca.modelo.tablero.casillasEspeciales;
+package ar.edu.unlu.oca.modelo.casillas;
 
 import ar.edu.unlu.oca.modelo.Jugador;
-import ar.edu.unlu.oca.modelo.tablero.Casilla;
+import ar.edu.unlu.oca.modelo.Tablero;
 
 public class CasillaTransportar extends Casilla {
 	private int nuevaPosicion;
@@ -22,8 +22,8 @@ public class CasillaTransportar extends Casilla {
 		}
 	}
 	
-	public String accion(Jugador jugador) {
-		jugador.saltarCasilla(nuevaPosicion);
+	public String accion(Tablero tablero, Jugador jugador) {
+		jugador.moverFicha(tablero, this.nuevaPosicion - jugador.getCasillaActual());
 		return getDescripcion();
 	}
 

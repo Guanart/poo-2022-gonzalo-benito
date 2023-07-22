@@ -12,7 +12,7 @@ import ar.edu.unlu.rmimvc.Util;
 import ar.edu.unlu.rmimvc.servidor.Servidor;
 
 public class OcaAppServidor {
-	public static final boolean DEV = false;
+	public static final boolean DEV = true;
 	
 	public static void main(String[] args) {
 		String ip;

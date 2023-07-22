@@ -1,16 +1,16 @@
-package ar.edu.unlu.oca.modelo.tablero;
+package ar.edu.unlu.oca.modelo;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Queue;
 
-import ar.edu.unlu.oca.modelo.Jugador;
-import ar.edu.unlu.oca.modelo.tablero.casillasEspeciales.CasillaDado;
-import ar.edu.unlu.oca.modelo.tablero.casillasEspeciales.CasillaOca;
-import ar.edu.unlu.oca.modelo.tablero.casillasEspeciales.CasillaPerderTurno;
-import ar.edu.unlu.oca.modelo.tablero.casillasEspeciales.CasillaPozo;
-import ar.edu.unlu.oca.modelo.tablero.casillasEspeciales.CasillaPuente;
-import ar.edu.unlu.oca.modelo.tablero.casillasEspeciales.CasillaTransportar;
+import ar.edu.unlu.oca.modelo.casillas.Casilla;
+import ar.edu.unlu.oca.modelo.casillas.CasillaDado;
+import ar.edu.unlu.oca.modelo.casillas.CasillaOca;
+import ar.edu.unlu.oca.modelo.casillas.CasillaPerderTurno;
+import ar.edu.unlu.oca.modelo.casillas.CasillaPozo;
+import ar.edu.unlu.oca.modelo.casillas.CasillaPuente;
+import ar.edu.unlu.oca.modelo.casillas.CasillaTransportar;
 
 public class Tablero {
 	private final int CASILLA_INICIAL = 0;
@@ -68,13 +68,13 @@ public class Tablero {
 		return casillas.get(nroCasilla);
 	}
 
-	public void moverFicha(Jugador jugador, int casillaAnterior) {
+	public String moverFicha(Jugador jugador, int casillaAnterior) {
 		// El tablero conoce la posicion de cada ficha y las casillas, por lo es su responsabilidad liberar a los jugadores del pozo, y moverlos de un lugar a otro
 		if (jugador.getCasillaActual()>=CASILLA_POZO && casillaAnterior<CASILLA_POZO) {
 			((CasillaPozo) getCasilla(CASILLA_POZO)).liberarJugadores();
 		}
 		getCasilla(casillaAnterior).eliminarJugador(jugador);
-		getCasilla(jugador.getCasillaActual()).agregarJugador(this, jugador);
+		return getCasilla(jugador.getCasillaActual()).agregarJugador(this, jugador);
 	}
 	
 }

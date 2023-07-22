@@ -1,8 +1,7 @@
-package ar.edu.unlu.oca.modelo.tablero.casillasEspeciales;
+package ar.edu.unlu.oca.modelo.casillas;
 
 import ar.edu.unlu.oca.modelo.Jugador;
-import ar.edu.unlu.oca.modelo.tablero.Casilla;
-import ar.edu.unlu.oca.modelo.tablero.Tablero;
+import ar.edu.unlu.oca.modelo.Tablero;
 
 public class CasillaDado extends Casilla {
 

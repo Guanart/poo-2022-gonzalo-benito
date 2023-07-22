@@ -23,33 +23,12 @@ public class VistaGrafica implements IVista {
 	private Controlador controlador;
 
 	
-//	public VistaConsola(Controlador controlador) {
-//		setControlador(controlador);
-//		this.vPrincipal = new VentanaPrincipalConsola();
-//		// Agrega el comportamiento (ActionListener) que debe efectuar al hacer click
-//		this.vPrincipal.onClickEnviar(new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent arg0) {
-//				clickHandler(vPrincipal.getTextoInput().trim());
-//				vPrincipal.setTextoInput("");
-//			}
-//		});
-//
-//		this.vPrincipal.addWindowListener(new WindowAdapter() {
-//			@Override
-//			public void windowClosing(WindowEvent arg0) {
-//				controlador.cerrarApp();
-//			}
-//		});
-//
-//	}
-
-	
 	public VistaGrafica(Controlador controlador) {
 		super();
 		this.vInicioSesion = new VentanaInicioSesion();
 		this.vPrincipal = new VentanaPrincipalGrafica();
 		setControlador(controlador);		
+				
 		// Agrega el comportamiento (ActionListener) que debe efectuar al hacer click 
 		this.vInicioSesion.onClickIniciar(new ActionListener() {
 			@Override
@@ -104,7 +83,7 @@ public class VistaGrafica implements IVista {
 	@Override
 	public void setControlador(Controlador controlador) {
 		this.controlador = controlador;
-		controlador.agregarVista(this);
+		this.controlador.agregarVista(this);
 	}
 
 	@Override
@@ -115,8 +94,7 @@ public class VistaGrafica implements IVista {
 
 	@Override
 	public void mostrarFichas(EnumSet<Ficha> fichasDisponibles) {
-		// TODO Auto-generated method stub
-		
+		this.vInicioSesion.mostrarFichas(fichasDisponibles);
 	}
 
 	@Override
@@ -133,8 +111,7 @@ public class VistaGrafica implements IVista {
 
 	@Override
 	public void mostrarTurno(IJugador jugadorActual) {
-		// TODO Auto-generated method stub
-		
+		this.vPrincipal.activarDado(jugadorActual.getFicha()==controlador.getJugador().getFicha());
 	}
 
 	@Override

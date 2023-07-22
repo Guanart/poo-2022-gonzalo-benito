@@ -7,9 +7,7 @@ import java.util.EnumSet;
 
 import ar.edu.unlu.oca.modelo.Ficha;
 import ar.edu.unlu.oca.modelo.IJuego;
-import ar.edu.unlu.oca.modelo.Juego;
-import ar.edu.unlu.oca.utils.Observable;
-import ar.edu.unlu.oca.utils.Observador;
+import ar.edu.unlu.oca.modelo.IJugador;
 import ar.edu.unlu.oca.vista.IVista;
 import ar.edu.unlu.rmimvc.cliente.IControladorRemoto;
 import ar.edu.unlu.rmimvc.observer.IObservableRemoto;
@@ -20,12 +18,23 @@ public class Controlador implements IControladorRemoto, Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private ArrayList<IVista> vistas = new ArrayList<IVista>();
-	private Juego modelo;
+	private IJuego modelo;
+	private IJugador jugador;
 
 	public Controlador() {		
 
 	}
 	
+	@Override
+	public <T extends IObservableRemoto> void setModeloRemoto(T modeloRemoto) throws RemoteException {
+		this.modelo = (IJuego) modeloRemoto;
+		fichasDisponibles();
+	}
+	
+	public void agregarVista(IVista vista) {
+		vistas.add(vista);
+	}	
+
 	@Override
 	public void actualizar(IObservableRemoto modelo, Object args) throws RemoteException {
 		Eventos evento = (Eventos) args;
@@ -56,16 +65,6 @@ public class Controlador implements IControladorRemoto, Serializable {
 			break;
 		}		
 	}
-
-	@Override
-	public <T extends IObservableRemoto> void setModeloRemoto(T modeloRemoto) throws RemoteException {
-		this.modelo = (Juego) modeloRemoto;
-	}
-	
-	public void agregarVista(IVista vista) {
-		vistas.add(vista);
-	}
-
 	
 	/*
 	 * ###########################
@@ -180,8 +179,10 @@ public class Controlador implements IControladorRemoto, Serializable {
 
 	public void cargarJugador(String nombre, int color) {
 		try {
-			modelo.cargarJugador(nombre, color);
+			// Al agregar el último jugador, no da tiempo al ultimo controlador de asignar this.jugador, porque comienza la partida (luego lo termina asignando)
+			this.jugador = modelo.cargarJugador(nombre, color);
 			for (IVista vista : vistas) {
+				modelo.iniciarJuego(); // Arranca si completo el cupo de jugadores
 				vista.mostrarJugadores(modelo.getJugadores());
 			}
 		} catch (Exception e) {
@@ -199,6 +200,10 @@ public class Controlador implements IControladorRemoto, Serializable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
+	}
+
+	public IJugador getJugador() {
+		return this.jugador;
 	}
 
 }

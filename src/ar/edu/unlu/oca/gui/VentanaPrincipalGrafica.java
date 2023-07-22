@@ -22,6 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 
+import ar.edu.unlu.oca.modelo.Ficha;
 import ar.edu.unlu.oca.modelo.IJugador;
 import java.awt.event.ActionEvent;
 import javax.swing.border.TitledBorder;
@@ -38,7 +39,6 @@ public class VentanaPrincipalGrafica extends JFrame {
 	private JList playerList;
 	private JButton botonDados;
 
-	
 	/**
 	 * Create the frame.
 	 */
@@ -83,6 +83,7 @@ public class VentanaPrincipalGrafica extends JFrame {
     	botonDados = new JButton(new ImageIcon(getClass().getResource("../resources/images/dado.png")));
     	botonDados.setBackground(new Color(204, 153, 0));
     	botonDados.setBounds(688, 334, 133, 109);
+    	botonDados.setEnabled(false);
     	backgroundPanel.add(botonDados);
     	
 		setContentPane(backgroundPanel);
@@ -98,16 +99,22 @@ public class VentanaPrincipalGrafica extends JFrame {
 	}
 
 
+	@SuppressWarnings("unchecked")
 	public void actualizarListaUsuarios(ArrayList<IJugador> usuarios) {
 		this.playerList.setModel(new AbstractListModel() {
 			@Override
 			public Object getElementAt(int arg0) {
-				return usuarios.get(arg0).getNombre();
+				IJugador jugador = usuarios.get(arg0);
+				return "<html><font color='"+jugador.getFicha().HTMLColor+"'>"+jugador.getNombre()+"</font></html>";
 			}
 			@Override
 			public int getSize() {
 				return usuarios.size();
 			}
 		});		
+	}
+
+	public void activarDado(boolean activar) {
+		botonDados.setEnabled(activar);
 	}
 }

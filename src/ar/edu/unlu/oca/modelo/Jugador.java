@@ -3,7 +3,6 @@ package ar.edu.unlu.oca.modelo;
 import java.io.Serializable;
 
 import ar.edu.unlu.oca.controlador.Eventos;
-import ar.edu.unlu.oca.modelo.tablero.Tablero;
 
 public class Jugador implements IJugador, Serializable {
 	private static final long serialVersionUID = 1L;
@@ -14,7 +13,7 @@ public class Jugador implements IJugador, Serializable {
 	private int turnosPerdidos = 0;
 	private String nombre;
 	private int ultimaTirada;	// El ultimo dado obtenido
-	
+	private String descripcionCasillaActual;	
 	private final int CASILLA_FINAL = 63;
 
 	
@@ -27,15 +26,17 @@ public class Jugador implements IJugador, Serializable {
 
 	public Eventos jugar(Tablero tablero, Dado dado) {
 		if (turnosPerdidos > 0) {
-			--turnosPerdidos;
+			turnosPerdidos--;
 			return Eventos.TURNO_TERMINADO;
 		}
 		else if (estaEnPozo) {
 			return Eventos.TURNO_TERMINADO;
 		}
 		moverFicha(tablero, dado.tirar());
-		
+		System.out.println("Turnos extra: "+turnosExtra);
+		System.out.println("Turnos perdidos: "+turnosPerdidos);
 		if (turnosExtra > 0) {
+			turnosExtra--;
 			return Eventos.TURNO_GANADO;
 		}
 		else if (turnosPerdidos > 0) {
@@ -58,29 +59,22 @@ public class Jugador implements IJugador, Serializable {
 		} else {
 			this.casilla = aux;
 		}
-		tablero.moverFicha(this, casillaAnterior);
+		descripcionCasillaActual = tablero.moverFicha(this, casillaAnterior);
 	}
 	
 	public boolean gano() {
 		return casilla==CASILLA_FINAL;
 	}
-	
-	public boolean tieneTurnos() {
-		return turnosExtra > 0;
-	}
-	
+		
 	public void darTurno() {
-		++turnosExtra;
+		turnosExtra++;
 	}
 	
-	public void quitarTurno(int cantTurnos) {
-		turnosExtra -= cantTurnos;
-	}
-	
-	public int saltarCasilla(int nuevaCasilla) {
-		this.casilla = nuevaCasilla;
-		return casilla;
-	}
+//	public int saltarCasilla(int nuevaCasilla) {
+//		
+//		this.casilla = nuevaCasilla;
+//		return casilla;
+//	}
 
 	public void setPozo() {
 		estaEnPozo = true;
@@ -98,16 +92,12 @@ public class Jugador implements IJugador, Serializable {
 		return this.ultimaTirada;
 	}
 	
-	public boolean tieneTurnosPerdidos() {
-		return turnosPerdidos > 0;
-	}
-
 	public void incTurnoPerdido(int turnos) {
 		turnosPerdidos += turnos;
 	}
 
 	public void decTurnoPerdido() {
-		--turnosPerdidos;
+		turnosPerdidos--;
 	}
 
 
@@ -125,6 +115,10 @@ public class Jugador implements IJugador, Serializable {
 	@Override
 	public Ficha getFicha() {
 		return ficha;
+	}
+
+	public String getDescripcionCasillaActual() {
+		return descripcionCasillaActual;
 	}
 
 }

@@ -34,7 +34,7 @@ public class OcaAppCliente {
 					JOptionPane.QUESTION_MESSAGE,
 					null,
 					null,
-					9999
+					10000
 					);
 		} else {
 			ArrayList<String> ips = Util.getIpDisponibles();
@@ -52,7 +52,7 @@ public class OcaAppCliente {
 					JOptionPane.QUESTION_MESSAGE,
 					null,
 					null,
-					9999
+					10000
 					);
 			ipServidor = (String) JOptionPane.showInputDialog(
 					null, 

@@ -1,13 +1,15 @@
-package ar.edu.unlu.oca.modelo.tablero.casillasEspeciales;
+package ar.edu.unlu.oca.modelo.casillas;
 
 import java.util.HashMap;
 
 import ar.edu.unlu.oca.modelo.Jugador;
-import ar.edu.unlu.oca.modelo.tablero.Casilla;
+import ar.edu.unlu.oca.modelo.Tablero;
 
 public class CasillaOca extends Casilla {
 	private int nuevaPosicion;
-    private final HashMap<Integer, Integer> CASILLAS_OCA = new HashMap<Integer, Integer>(){{
+    private final HashMap<Integer, Integer> CASILLAS_OCA = new HashMap<Integer, Integer>(){private static final long serialVersionUID = -1686911704292410115L;
+
+	{
 		put(5, 9);
 		put(9, 14);
 		put(14, 18);
@@ -29,8 +31,8 @@ public class CasillaOca extends Casilla {
 		appendDescripcion(" - OCA -> Avanza a la casilla "+Integer.toString(nuevaPosicion)+" (OCA) y vuelve a tirar");
 	}
 	
-	public String accion(Jugador jugador) {
-		jugador.saltarCasilla(nuevaPosicion);
+	public String accion(Tablero tablero, Jugador jugador) {
+		jugador.moverFicha(tablero, this.nuevaPosicion - this.getPosicion());
 		jugador.darTurno();
 		return getDescripcion();
 	}
