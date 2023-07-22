@@ -2,7 +2,7 @@ package ar.edu.unlu.oca.modelo;
 
 public enum Ficha {
 	ROJA(1, "Roja"),
-	AMARILLA(2, "Amarilla"),
+	VIOLETA(2, "Violeta"),
 	VERDE(3, "Verde"),
 	AZUL(4, "Azul");
 	

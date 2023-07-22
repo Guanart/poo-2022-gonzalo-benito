@@ -15,5 +15,10 @@ public class CasillaPozo extends Casilla {
 		return getDescripcion();
 	}
 
+	public void liberarJugadores() {
+		for (Jugador jugador : jugadores) {
+			jugador.liberarDelPozo();
+		}		
+	}
 
 }

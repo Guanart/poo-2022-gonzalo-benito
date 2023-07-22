@@ -2,15 +2,10 @@ package ar.edu.unlu.oca.modelo.tablero;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.Queue;
 
-// No lo uso en esta version
-import ar.edu.unlu.oca.modelo.tablero.acciones.AccionModificarPosicion;
-import ar.edu.unlu.oca.modelo.tablero.acciones.AccionModificarTurnos;
-import ar.edu.unlu.oca.modelo.tablero.acciones.AccionPozo;
-import ar.edu.unlu.oca.modelo.tablero.acciones.IAccion;
+import ar.edu.unlu.oca.modelo.Jugador;
 import ar.edu.unlu.oca.modelo.tablero.casillasEspeciales.CasillaDado;
-import ar.edu.unlu.oca.modelo.tablero.casillasEspeciales.CasillaMover;
 import ar.edu.unlu.oca.modelo.tablero.casillasEspeciales.CasillaOca;
 import ar.edu.unlu.oca.modelo.tablero.casillasEspeciales.CasillaPerderTurno;
 import ar.edu.unlu.oca.modelo.tablero.casillasEspeciales.CasillaPozo;
@@ -38,7 +33,7 @@ public class Tablero {
     
 	private ArrayList<Casilla> casillas = new ArrayList<Casilla>();
 
-	public void inicializar() {		
+	public void inicializar(Queue<Jugador> jugadores) {		
 		for (int i=CASILLA_INICIAL; i<=CASILLA_FINAL; ++i) {	
 			Casilla casilla;
 			if (CASILLAS_DADO.contains(i)) {
@@ -63,10 +58,22 @@ public class Tablero {
 			}
 			casillas.add(casilla);	
 		}
+		
+		for (Jugador jugador : jugadores) {			
+			getCasilla(CASILLA_INICIAL).agregarJugador(jugador);
+		}
 	}
 	
 	public Casilla getCasilla(int nroCasilla) {
 		return casillas.get(nroCasilla);
+	}
+
+	public void moverFicha(Jugador jugador, int casillaAnterior) {
+		if (jugador.getCasillaActual()>=31 && casillaAnterior<31) {
+			((CasillaPozo) getCasilla(CASILLA_POZO)).liberarJugadores();
+		}
+		getCasilla(casillaAnterior).eliminarJugador(jugador);
+		getCasilla(jugador.getCasillaActual()).agregarJugador(this, jugador);
 	}
 	
 }

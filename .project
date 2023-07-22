@@ -14,4 +14,10 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<variableList>
+		<variable>
+			<name>RESOURCES</name>
+			<value>file:/C:/Users/gu4n4/eclipse-workspace/JuegoDeLaOca/src/ar/edu/unlu/resources/images/dado5.png</value>
+		</variable>
+	</variableList>
 </projectDescription>

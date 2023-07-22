@@ -1,36 +1,32 @@
 package ar.edu.unlu.oca.controlador;
 
+import java.io.Serializable;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.EnumSet;
 
 import ar.edu.unlu.oca.modelo.Ficha;
 import ar.edu.unlu.oca.modelo.IJuego;
+import ar.edu.unlu.oca.modelo.Juego;
 import ar.edu.unlu.oca.utils.Observable;
 import ar.edu.unlu.oca.utils.Observador;
 import ar.edu.unlu.oca.vista.IVista;
+import ar.edu.unlu.rmimvc.cliente.IControladorRemoto;
+import ar.edu.unlu.rmimvc.observer.IObservableRemoto;
 
 // Las Exceptions serán RemoteException
 
-public class Controlador implements Observador {
+public class Controlador implements IControladorRemoto, Serializable {
 
 	private ArrayList<IVista> vistas = new ArrayList<IVista>();
-	private IJuego modelo;
+	private Juego modelo;
 
 	public Controlador() {		
 
 	}
 	
-	public void agregarVista(IVista vista) {
-		vistas.add(vista);
-	}
-
-	public void setModelo(IJuego modelo) {
-		this.modelo = modelo;
-		((Observable) this.modelo).agregarObservador(this);
-	}
-	
 	@Override
-	public void notificar(Observable o, Object args) {
+	public void actualizar(IObservableRemoto modelo, Object args) throws RemoteException {
 		Eventos evento = (Eventos) args;
 		switch(evento) {
 		case JUGADOR_AGREGADO:
@@ -43,11 +39,13 @@ public class Controlador implements Observador {
 		case LIMITE_JUGADORES:
 			
 			break;
-		case MOSTRAR_CASILLA_DADOS:
+		case MOSTRAR_CASILLA_DADOS:		// PODRIA SER LO MISMO QUE TURNO_TERMINADO
 			mostrarDados();
 			mostrarCasilla();
 			break;
 		case TURNO_TERMINADO:
+			mostrarDados();
+			mostrarCasilla();
 			mostrarTurno();
 			break;
 		case FIN_JUEGO:
@@ -55,9 +53,19 @@ public class Controlador implements Observador {
 			break;
 		default:
 			break;
-		}
+		}		
 	}
 
+	@Override
+	public <T extends IObservableRemoto> void setModeloRemoto(T modeloRemoto) throws RemoteException {
+		this.modelo = (Juego) modeloRemoto;
+	}
+	
+	public void agregarVista(IVista vista) {
+		vistas.add(vista);
+	}
+
+	
 	/*
 	 * ###########################
 	 * ACTUALIZACIONES DE LA VISTA
@@ -84,7 +92,7 @@ public class Controlador implements Observador {
 		try {
 			for (IVista vista : vistas)
 				vista.mostrarGanador(modelo.getJugadorActual());
-		} catch (Exception e) {
+		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
@@ -101,13 +109,13 @@ public class Controlador implements Observador {
 	}
 
 	private void mostrarCasilla() {
-		try {
-			for (IVista vista : vistas)
-				vista.mostrarCasilla(modelo.getCasillaActual());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}		
+//		try {
+//			for (IVista vista : vistas)
+//				vista.mostrarCasilla(modelo.getCasillaActual());
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}		
 		
 	}
 
@@ -132,9 +140,15 @@ public class Controlador implements Observador {
 	}
 	
 	public void fichasDisponibles() {
-		EnumSet<Ficha> fichasDisponibles = modelo.fichasDisponibles();
-		for (IVista vista : vistas) {
-			vista.mostrarFichas(fichasDisponibles);
+		EnumSet<Ficha> fichasDisponibles;
+		try {
+			fichasDisponibles = modelo.fichasDisponibles();
+			for (IVista vista : vistas) {
+				vista.mostrarFichas(fichasDisponibles);
+			}
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
@@ -146,16 +160,29 @@ public class Controlador implements Observador {
 	 */
 	
 	public void iniciarPartida() {
-		modelo.iniciarJuego();
+		try {
+			modelo.iniciarJuego();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void jugarTurno() {
-		modelo.jugarTurno();
+		try {
+			modelo.jugarTurno();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void cargarJugador(String nombre, int color) {
 		try {
 			modelo.cargarJugador(nombre, color);
+			for (IVista vista : vistas) {
+				vista.mostrarJugadores(modelo.getJugadores());
+			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -165,7 +192,7 @@ public class Controlador implements Observador {
 	// TODO: con RMI, debería cerrar la vista creo
 	public void cerrarApp() {
 		try {
-//			this.modelo.cerrar();  	TODO -> cerrar correctamente, de manera no brusca
+			this.modelo.cerrar();  	// TODO -> cerrar correctamente, de manera no brusca
 			System.exit(0);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

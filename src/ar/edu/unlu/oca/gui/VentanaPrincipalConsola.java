@@ -1,5 +1,6 @@
-package ar.edu.unlu.oca.vista;
+package ar.edu.unlu.oca.gui;
 
+import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -30,7 +31,7 @@ import javax.swing.JButton;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 
-public class VentanaPrincipal extends JFrame {
+public class VentanaPrincipalConsola extends JFrame {
 	
 	private JPanel contentPane;
 	private JTextField textInput;
@@ -39,11 +40,27 @@ public class VentanaPrincipal extends JFrame {
 	private JTextArea txtHistorico;
 	
 	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					VentanaPrincipalConsola frame = new VentanaPrincipalConsola();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+	
+	/**
 	 * Create the frame.
 	 */
-	public VentanaPrincipal() {
+	public VentanaPrincipalConsola() {
 		setLocationRelativeTo(null);
-		setBounds(100, 100, 550, 600);
+		setBounds(100, 100, 859, 600);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);

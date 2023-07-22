@@ -1,40 +1,57 @@
 package ar.edu.unlu.oca.modelo;
 
-public class Jugador implements IJugador {
+import java.io.Serializable;
+
+import ar.edu.unlu.oca.controlador.Eventos;
+import ar.edu.unlu.oca.modelo.tablero.Tablero;
+
+public class Jugador implements IJugador, Serializable {
+	private static final long serialVersionUID = 1L;
 	private Ficha ficha;
 	private boolean estaEnPozo = false;
 	private int casilla;
-	private int turnos = 0;
+	private int turnosExtra = 0;
 	private int turnosPerdidos = 0;
 	private String nombre;
-	private int ultimaTirada;
+	private int ultimaTirada;	// El ultimo dado obtenido
 	
 	private final int CASILLA_FINAL = 63;
 
 	
 	public Jugador(String nombre, Ficha ficha) {
 		super();
-		this.ficha = ficha;
 		this.casilla = 0;
-		this.turnos = 0;
 		this.nombre = nombre;
+		this.ficha = ficha;
 	}
 
-	public int jugar(int tirada) {
-		quitarTurno(1);
-		return moverFicha(tirada);
+	public Eventos jugar(Tablero tablero, Dado dado) {
+		if (turnosPerdidos > 0) {
+			--turnosPerdidos;
+			return Eventos.TURNO_PERDIDO;
+		}
+		else if (estaEnPozo) {
+			return Eventos.ESTA_EN_POZO;
+		}
+		
+		moverFicha(tablero, dado.tirar());
+		if (turnosExtra > 0) {
+			return Eventos.TURNO_GANADO;
+		}
+		return Eventos.TURNO_TERMINADO;
 	}
-
-	public int moverFicha(int cantCasillas) {
-		this.ultimaTirada = cantCasillas;
+		
+	public void moverFicha(Tablero tablero, int cantCasillas) {
+		this.ultimaTirada = cantCasillas;		// ???????????
 		// Estoy en la 61, saco 4 -> debo quedar en la 61
 		int aux = this.casilla + cantCasillas;
+		int casillaAnterior = this.casilla;
 		if (aux > CASILLA_FINAL) {
 			this.casilla = CASILLA_FINAL - (aux % CASILLA_FINAL);
 		} else {
 			this.casilla = aux;
 		}
-		return casilla;
+		tablero.moverFicha(this, casillaAnterior);
 	}
 	
 	public boolean gano() {
@@ -42,15 +59,15 @@ public class Jugador implements IJugador {
 	}
 	
 	public boolean tieneTurnos() {
-		return turnos > 0;
+		return turnosExtra > 0;
 	}
 	
 	public void darTurno() {
-		++turnos;
+		++turnosExtra;
 	}
 	
 	public void quitarTurno(int cantTurnos) {
-		turnos -= cantTurnos;
+		turnosExtra -= cantTurnos;
 	}
 	
 	public int saltarCasilla(int nuevaCasilla) {

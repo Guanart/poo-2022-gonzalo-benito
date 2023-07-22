@@ -2,6 +2,7 @@ package ar.edu.unlu.oca.modelo.tablero.casillasEspeciales;
 
 import ar.edu.unlu.oca.modelo.Jugador;
 import ar.edu.unlu.oca.modelo.tablero.Casilla;
+import ar.edu.unlu.oca.modelo.tablero.Tablero;
 
 public class CasillaDado extends Casilla {
 
@@ -10,9 +11,9 @@ public class CasillaDado extends Casilla {
 		appendDescripcion(" - DADO -> Avanza %d casillas");
 	}
 	
-	public String accion(Jugador jugador) {
+	public String accion(Tablero tablero, Jugador jugador) {
 		int cantAvanzar = getPosicion() + jugador.getUltimaTirada();
-		jugador.moverFicha(cantAvanzar);
+		jugador.moverFicha(tablero, cantAvanzar);
 		return String.format(getDescripcion(), cantAvanzar);
 	}
 

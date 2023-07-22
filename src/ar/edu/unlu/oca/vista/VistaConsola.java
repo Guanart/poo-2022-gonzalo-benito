@@ -10,6 +10,7 @@ import java.util.EnumSet;
 import javax.swing.JFrame;
 
 import ar.edu.unlu.oca.controlador.Controlador;
+import ar.edu.unlu.oca.gui.VentanaPrincipalConsola;
 import ar.edu.unlu.oca.modelo.Ficha;
 import ar.edu.unlu.oca.modelo.IJugador;
 
@@ -19,7 +20,7 @@ public class VistaConsola extends JFrame implements IVista {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private VentanaPrincipal vPrincipal;
+	private VentanaPrincipalConsola vPrincipal;
 	private Controlador controlador;
 	private Enum<?> estadoActual = OpcionesMenuPrincipal.INICIO;
 	// Durante la carga de jugadores, utilizo:
@@ -29,7 +30,7 @@ public class VistaConsola extends JFrame implements IVista {
 
 	public VistaConsola(Controlador controlador) {
 		setControlador(controlador);
-		this.vPrincipal = new VentanaPrincipal();
+		this.vPrincipal = new VentanaPrincipalConsola();
 		// Agrega el comportamiento (ActionListener) que debe efectuar al hacer click
 		this.vPrincipal.onClickEnviar(new ActionListener() {
 			@Override
