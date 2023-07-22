@@ -28,16 +28,23 @@ public class Jugador implements IJugador, Serializable {
 	public Eventos jugar(Tablero tablero, Dado dado) {
 		if (turnosPerdidos > 0) {
 			--turnosPerdidos;
+			return Eventos.TURNO_TERMINADO;
+		}
+		else if (estaEnPozo) {
+			return Eventos.TURNO_TERMINADO;
+		}
+		moverFicha(tablero, dado.tirar());
+		
+		if (turnosExtra > 0) {
+			return Eventos.TURNO_GANADO;
+		}
+		else if (turnosPerdidos > 0) {
 			return Eventos.TURNO_PERDIDO;
 		}
 		else if (estaEnPozo) {
 			return Eventos.ESTA_EN_POZO;
 		}
-		
-		moverFicha(tablero, dado.tirar());
-		if (turnosExtra > 0) {
-			return Eventos.TURNO_GANADO;
-		}
+
 		return Eventos.TURNO_TERMINADO;
 	}
 		

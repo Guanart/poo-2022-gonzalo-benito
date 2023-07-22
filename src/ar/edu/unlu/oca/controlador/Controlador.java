@@ -18,6 +18,7 @@ import ar.edu.unlu.rmimvc.observer.IObservableRemoto;
 
 public class Controlador implements IControladorRemoto, Serializable {
 
+	private static final long serialVersionUID = 1L;
 	private ArrayList<IVista> vistas = new ArrayList<IVista>();
 	private Juego modelo;
 

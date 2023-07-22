@@ -60,7 +60,7 @@ public class Tablero {
 		}
 		
 		for (Jugador jugador : jugadores) {			
-			getCasilla(CASILLA_INICIAL).agregarJugador(jugador);
+			getCasilla(CASILLA_INICIAL).agregarJugador(this, jugador);
 		}
 	}
 	
@@ -69,7 +69,8 @@ public class Tablero {
 	}
 
 	public void moverFicha(Jugador jugador, int casillaAnterior) {
-		if (jugador.getCasillaActual()>=31 && casillaAnterior<31) {
+		// El tablero conoce la posicion de cada ficha y las casillas, por lo es su responsabilidad liberar a los jugadores del pozo, y moverlos de un lugar a otro
+		if (jugador.getCasillaActual()>=CASILLA_POZO && casillaAnterior<CASILLA_POZO) {
 			((CasillaPozo) getCasilla(CASILLA_POZO)).liberarJugadores();
 		}
 		getCasilla(casillaAnterior).eliminarJugador(jugador);

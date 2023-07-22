@@ -4,22 +4,16 @@ import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.LinkedList;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import ar.edu.unlu.oca.controlador.Eventos;
 import ar.edu.unlu.oca.modelo.tablero.Tablero;
-import ar.edu.unlu.oca.utils.Observable;
-import ar.edu.unlu.oca.utils.Observador;
 import ar.edu.unlu.rmimvc.observer.ObservableRemoto;
 
 
 public class Juego extends ObservableRemoto implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private Dado dado;
 	private Tablero tablero;
