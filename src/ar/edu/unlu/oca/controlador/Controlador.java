@@ -8,6 +8,7 @@ import java.util.EnumSet;
 import ar.edu.unlu.oca.modelo.Ficha;
 import ar.edu.unlu.oca.modelo.IJuego;
 import ar.edu.unlu.oca.modelo.IJugador;
+import ar.edu.unlu.oca.modelo.Tablero;
 import ar.edu.unlu.oca.vista.IVista;
 import ar.edu.unlu.rmimvc.cliente.IControladorRemoto;
 import ar.edu.unlu.rmimvc.observer.IObservableRemoto;
@@ -28,6 +29,7 @@ public class Controlador implements IControladorRemoto, Serializable {
 	@Override
 	public <T extends IObservableRemoto> void setModeloRemoto(T modeloRemoto) throws RemoteException {
 		this.modelo = (IJuego) modeloRemoto;
+		// Verificar si la partida comenzó
 		fichasDisponibles();
 	}
 	
@@ -46,16 +48,16 @@ public class Controlador implements IControladorRemoto, Serializable {
 			// TODO: podría configurar algo especial al comienzo de la partida. Ej: orden de jugadores
 			mostrarTurno();
 			break;
-		case LIMITE_JUGADORES:
-			
-			break;
-		case MOSTRAR_CASILLA_DADOS:		// PODRIA SER LO MISMO QUE TURNO_TERMINADO
-			mostrarDados();
-			mostrarCasilla();
-			break;
+//		case LIMITE_JUGADORES:
+//			
+//			break;
+//		case MOSTRAR_CASILLA_DADOS:		// PODRIA SER LO MISMO QUE TURNO_TERMINADO
+//			mostrarDados();
+//			mostrarCasilla();
+//			break;
 		case TURNO_TERMINADO:
 			mostrarDados();
-			mostrarCasilla();
+			mostrarDescripcionCasilla();
 			mostrarTurno();
 			break;
 		case FIN_JUEGO:
@@ -108,14 +110,14 @@ public class Controlador implements IControladorRemoto, Serializable {
 		}				
 	}
 
-	private void mostrarCasilla() {
-//		try {
-//			for (IVista vista : vistas)
-//				vista.mostrarCasilla(modelo.getCasillaActual());
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}		
+	private void mostrarDescripcionCasilla() {
+		try {
+			for (IVista vista : vistas)
+				vista.mostrarDescripcionCasilla(modelo.getCasillaActual());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
 		
 	}
 
@@ -189,6 +191,17 @@ public class Controlador implements IControladorRemoto, Serializable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
+	}
+	
+	public void actualizarTablero() {
+		try {
+			for (IVista vista : vistas) {
+				vista.actualizarTablero(modelo.getTablero());
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}			
 	}
 	
 	// TODO: con RMI, debería cerrar la vista creo

@@ -6,6 +6,7 @@ import java.util.EnumSet;
 import ar.edu.unlu.oca.controlador.Controlador;
 import ar.edu.unlu.oca.modelo.Ficha;
 import ar.edu.unlu.oca.modelo.IJugador;
+import ar.edu.unlu.oca.modelo.Tablero;
 
 public interface IVista {
 	void iniciar();
@@ -19,9 +20,10 @@ public interface IVista {
 	void cargarJugador(String input);
 	void iniciarPartida();
 	void mostrarTurno(IJugador jugadorActual);
-	void mostrarCasilla(String descripcionCasilla);
+	void mostrarDescripcionCasilla(String descripcionCasilla);
 	void mostrarDado(String valorDado);
 	void mostrarGanador(IJugador jugadorActual);
+	void actualizarTablero(Tablero tablero);
  
 }
 

@@ -20,7 +20,8 @@ public class CasillaPerderTurno extends Casilla {
 		}
 	}
 
-	public String accion(Tablero tablero, Jugador jugador) {
+	@Override
+	public String accion(Tablero tablero, Jugador jugador, boolean movidaEspecial) {
 		jugador.incTurnoPerdido(cantTurnos);
 		return getDescripcion();
 	}

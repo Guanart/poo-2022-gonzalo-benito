@@ -12,8 +12,7 @@ import ar.edu.unlu.rmimvc.observer.ObservableRemoto;
 
 
 public class Juego extends ObservableRemoto implements IJuego, Serializable {
-
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -4695236711809599703L;
 	private Dado dado;
 	private Tablero tablero;
 	private Queue<Jugador> jugadores;
@@ -94,8 +93,9 @@ public class Juego extends ObservableRemoto implements IJuego, Serializable {
 		System.out.println("Lanzó: "+jugador.getUltimaTirada());
 		System.out.println(descripcionUltimaCasilla);
 		System.out.println(evento);
+		System.out.println("------------------------------------");
 
-		if (jugador.gano()) {
+		if (jugador.gano(tablero)) {
 			notificarObservadores(Eventos.FIN_JUEGO);
 			terminarJuego();
 		}
@@ -119,6 +119,10 @@ public class Juego extends ObservableRemoto implements IJuego, Serializable {
 	public IJugador getJugadorActual() throws RemoteException {
 		return jugadores.peek();
 	}
-
+	
+	public Tablero getTablero() {
+		return tablero;
+	}
+ 
 
 }

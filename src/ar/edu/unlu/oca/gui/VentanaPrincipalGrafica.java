@@ -1,6 +1,7 @@
 package ar.edu.unlu.oca.gui;
 
 import java.awt.EventQueue;
+import java.awt.Graphics;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.event.ActionListener;
@@ -24,6 +25,8 @@ import javax.swing.border.EmptyBorder;
 
 import ar.edu.unlu.oca.modelo.Ficha;
 import ar.edu.unlu.oca.modelo.IJugador;
+import ar.edu.unlu.oca.modelo.Tablero;
+
 import java.awt.event.ActionEvent;
 import javax.swing.border.TitledBorder;
 import javax.swing.border.BevelBorder;
@@ -100,21 +103,38 @@ public class VentanaPrincipalGrafica extends JFrame {
 
 
 	@SuppressWarnings("unchecked")
-	public void actualizarListaUsuarios(ArrayList<IJugador> usuarios) {
+	public void actualizarListaUsuarios(ArrayList<IJugador> usuarios, IJugador jugadorControlador) {
 		this.playerList.setModel(new AbstractListModel() {
 			@Override
 			public Object getElementAt(int arg0) {
 				IJugador jugador = usuarios.get(arg0);
+				if(jugador.getFicha()==jugadorControlador.getFicha()) {					
+					return "<html><font color='"+jugador.getFicha().HTMLColor+"'>"+jugador.getNombre()+" (tú)</font></html>";
+				}
 				return "<html><font color='"+jugador.getFicha().HTMLColor+"'>"+jugador.getNombre()+"</font></html>";
 			}
 			@Override
 			public int getSize() {
 				return usuarios.size();
 			}
-		});		
+		});	
 	}
 
 	public void activarDado(boolean activar) {
 		botonDados.setEnabled(activar);
 	}
+
+	public void imprimirDescripcion(String descripcionCasilla) {
+		boardLabel.setText(descripcionCasilla);
+		
+	}
+
+	public void actualizarTablero(Tablero tablero) {
+		boardLabel.repaint();
+		
+	}
+	
+    protected void paintComponent(Graphics g) {
+    
+    }
 }

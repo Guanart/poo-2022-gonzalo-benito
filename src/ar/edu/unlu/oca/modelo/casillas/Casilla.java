@@ -1,12 +1,13 @@
 package ar.edu.unlu.oca.modelo.casillas;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import ar.edu.unlu.oca.modelo.Jugador;
 import ar.edu.unlu.oca.modelo.Tablero;
 
-public class Casilla {
-
+public class Casilla implements Serializable {
+	private static final long serialVersionUID = -1292070912659182504L;
 	private int posicion;
 	protected ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
 	private String descripcion;
@@ -29,7 +30,7 @@ public class Casilla {
 		return posicion;
 	}
 
-	public String accion(Tablero tablero, Jugador jugador) {
+	public String accion(Tablero tablero, Jugador jugador, boolean movidaEspecial) {
 		return this.descripcion;
 	}
 	
@@ -41,9 +42,9 @@ public class Casilla {
 		this.descripcion = this.descripcion+descripcion;
 	}
 
-	public String agregarJugador(Tablero tablero, Jugador jugador) {
+	public String agregarJugador(Tablero tablero, Jugador jugador, boolean movidaEspecial) {
 		jugadores.add(jugador);
-		return this.accion(tablero, jugador);
+		return this.accion(tablero, jugador, movidaEspecial);
 	}
 	
 	public void eliminarJugador(Jugador jugador) {

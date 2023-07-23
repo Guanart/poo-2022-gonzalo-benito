@@ -1,7 +1,9 @@
 package ar.edu.unlu.oca.modelo;
 
+import ar.edu.unlu.oca.modelo.casillas.Casilla;
+
 public interface IJugador {
-	int getCasillaActual();
+	Casilla getCasillaActual();
 	String getNombre();
 	Ficha getFicha();
 }

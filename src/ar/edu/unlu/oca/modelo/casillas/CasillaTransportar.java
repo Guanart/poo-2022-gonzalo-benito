@@ -22,8 +22,12 @@ public class CasillaTransportar extends Casilla {
 		}
 	}
 	
-	public String accion(Tablero tablero, Jugador jugador) {
-		jugador.moverFicha(tablero, this.nuevaPosicion - jugador.getCasillaActual());
+	@Override
+	public String accion(Tablero tablero, Jugador jugador, boolean movidaEspecial) {
+		if (!movidaEspecial) {	
+			int aux = this.nuevaPosicion - jugador.getCasillaActual().getPosicion();
+			jugador.moverFicha(tablero, aux, true);
+		}
 		return getDescripcion();
 	}
 

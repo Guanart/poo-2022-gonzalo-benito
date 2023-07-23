@@ -17,4 +17,5 @@ public interface IJuego extends IObservableRemoto {
 	String getCasillaActual() throws RemoteException;
 	String mostrarDado() throws RemoteException;
 	void cerrar() throws RemoteException;
+	Tablero getTablero();
 }

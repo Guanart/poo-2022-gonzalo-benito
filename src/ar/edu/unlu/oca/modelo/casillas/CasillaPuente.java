@@ -11,10 +11,14 @@ public class CasillaPuente extends Casilla {
 		this.nuevaPosicion = 19;
 		appendDescripcion(" - PUENTE -> Avanza a la casilla "+Integer.toString(nuevaPosicion)+" (POSADA) y pierde un turno");
 	}
-	
-	public String accion(Tablero tablero, Jugador jugador) {
-		jugador.moverFicha(tablero, this.nuevaPosicion - jugador.getCasillaActual());
-		jugador.incTurnoPerdido(1);
+
+	@Override
+	public String accion(Tablero tablero, Jugador jugador, boolean movidaEspecial) {
+		if (!movidaEspecial) {	
+			int aux = this.nuevaPosicion - jugador.getCasillaActual().getPosicion();
+			jugador.moverFicha(tablero, aux, true);
+			jugador.incTurnoPerdido(1);
+		}
 		return getDescripcion();
 	}
 

@@ -1,5 +1,6 @@
 package ar.edu.unlu.oca.modelo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Queue;
@@ -12,18 +13,18 @@ import ar.edu.unlu.oca.modelo.casillas.CasillaPozo;
 import ar.edu.unlu.oca.modelo.casillas.CasillaPuente;
 import ar.edu.unlu.oca.modelo.casillas.CasillaTransportar;
 
-public class Tablero {
-	private final int CASILLA_INICIAL = 0;
-    private final int CASILLA_FINAL = 63;
-    private final int CASILLA_POSADA = 19;
+public class Tablero implements Serializable {
+	final static int CASILLA_INICIAL = 0;
+    final static int CASILLA_FINAL = 63;
+    final static int CASILLA_POSADA = 19;
     // No podrás volver a tirar el dado hasta que otro jugador pase por esa casilla
-    private final int CASILLA_POZO = 31;
+    final static int CASILLA_POZO = 31;
     // Retrocede hasta la casilla 30
-    private final int CASILLA_LABERINTO = 42;
+    final static int CASILLA_LABERINTO = 42;
     // Pierde dos turnos
-    private final int CASILLA_CARCEL = 56;
+    final static int CASILLA_CARCEL = 56;
     // Regresa a la casilla 1
-    private final int CASILLA_CALAVERA = 58;
+    final static int CASILLA_CALAVERA = 58;
     // Sumar el número de la casilla y el número de la tirada y avanzar la cantidad resultante
     private final ArrayList<Integer> CASILLAS_DADO = new ArrayList<Integer>(Arrays.asList(26, 53));
     // Avanza a la siguiente casilla OCA
@@ -59,24 +60,19 @@ public class Tablero {
 			casillas.add(casilla);	
 		}
 		
-		for (Jugador jugador : jugadores) {			
-			getCasilla(CASILLA_INICIAL).agregarJugador(this, jugador);
+		for (Jugador jugador : jugadores) {		
+			jugador.inicializar(this, getCasilla(CASILLA_INICIAL));
 		}
 	}
 	
 	public Casilla getCasilla(int nroCasilla) {
 		return casillas.get(nroCasilla);
 	}
-
-	public String moverFicha(Jugador jugador, int casillaAnterior) {
-		// El tablero conoce la posicion de cada ficha y las casillas, por lo es su responsabilidad liberar a los jugadores del pozo, y moverlos de un lugar a otro
-		if (jugador.getCasillaActual()>=CASILLA_POZO && casillaAnterior<CASILLA_POZO) {
-			((CasillaPozo) getCasilla(CASILLA_POZO)).liberarJugadores();
-		}
-		getCasilla(casillaAnterior).eliminarJugador(jugador);
-		return getCasilla(jugador.getCasillaActual()).agregarJugador(this, jugador);
-	}
 	
+	public CasillaPozo getCasillaPozo() {
+		return (CasillaPozo) casillas.get(CASILLA_POZO);
+	}
+		
 }
 
 

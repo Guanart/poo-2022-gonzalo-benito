@@ -10,10 +10,14 @@ public class CasillaDado extends Casilla {
 		appendDescripcion(" - DADO -> Avanza %d casillas");
 	}
 	
-	public String accion(Tablero tablero, Jugador jugador) {
-		int cantAvanzar = getPosicion() + jugador.getUltimaTirada();
-		jugador.moverFicha(tablero, cantAvanzar);
-		return String.format(getDescripcion(), cantAvanzar);
+	@Override
+	public String accion(Tablero tablero, Jugador jugador, boolean movidaEspecial) {
+		if (!movidaEspecial) {			
+			int cantAvanzar = getPosicion() + jugador.getUltimaTirada();
+			jugador.moverFicha(tablero, cantAvanzar, true);
+			return String.format(getDescripcion(), cantAvanzar);
+		}
+		return "";
 	}
 
 

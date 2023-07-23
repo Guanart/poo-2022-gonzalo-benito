@@ -3,12 +3,13 @@ package ar.edu.unlu.oca.modelo;
 import java.io.Serializable;
 
 import ar.edu.unlu.oca.controlador.Eventos;
+import ar.edu.unlu.oca.modelo.casillas.Casilla;
 
 public class Jugador implements IJugador, Serializable {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 6850634892505303832L;
 	private Ficha ficha;
 	private boolean estaEnPozo = false;
-	private int casilla;
+	private Casilla casilla;
 	private int turnosExtra = 0;
 	private int turnosPerdidos = 0;
 	private String nombre;
@@ -19,7 +20,7 @@ public class Jugador implements IJugador, Serializable {
 	
 	public Jugador(String nombre, Ficha ficha) {
 		super();
-		this.casilla = 0;
+//		this.casilla = 0;
 		this.nombre = nombre;
 		this.ficha = ficha;
 	}
@@ -32,7 +33,7 @@ public class Jugador implements IJugador, Serializable {
 		else if (estaEnPozo) {
 			return Eventos.TURNO_TERMINADO;
 		}
-		moverFicha(tablero, dado.tirar());
+		moverFicha(tablero, dado.tirar(), false);
 		System.out.println("Turnos extra: "+turnosExtra);
 		System.out.println("Turnos perdidos: "+turnosPerdidos);
 		if (turnosExtra > 0) {
@@ -49,21 +50,38 @@ public class Jugador implements IJugador, Serializable {
 		return Eventos.TURNO_TERMINADO;
 	}
 		
-	public void moverFicha(Tablero tablero, int cantCasillas) {
+	/*
+	 * var movidaEspecial indica si se mueve la ficha por el lanzamiento de dados, o por una acción de una casilla ; evita bucles al ejecutar moverFicha()
+	 */
+	public void moverFicha(Tablero tablero, int cantCasillas, boolean movidaEspecial) {
 		this.ultimaTirada = cantCasillas;		// ???????????
 		// Estoy en la 61, saco 4 -> debo quedar en la 61
-		int aux = this.casilla + cantCasillas;
-		int casillaAnterior = this.casilla;
+		int aux = casilla.getPosicion() + cantCasillas;
+		Casilla casillaAnterior = casilla;		// Podria validar cual es la casilla anterior, y tomar una decision con la accion de la casilla
 		if (aux > CASILLA_FINAL) {
-			this.casilla = CASILLA_FINAL - (aux % CASILLA_FINAL);
+			int i = CASILLA_FINAL - (aux % CASILLA_FINAL);
+			this.casilla = tablero.getCasilla(i);
 		} else {
-			this.casilla = aux;
+			this.casilla = tablero.getCasilla(aux);
 		}
-		descripcionCasillaActual = tablero.moverFicha(this, casillaAnterior);
+		
+		// Verifica si pasó por el pozo
+		if (casilla.getPosicion()>=Tablero.CASILLA_POZO && casillaAnterior.getPosicion()<Tablero.CASILLA_POZO) {
+			tablero.getCasillaPozo().liberarJugadores();
+		}
+		
+		// Modifica el estado del tablero (casillas)
+		casillaAnterior.eliminarJugador(this);
+		descripcionCasillaActual = casilla.agregarJugador(tablero, this, movidaEspecial);		
 	}
 	
-	public boolean gano() {
-		return casilla==CASILLA_FINAL;
+	public void inicializar(Tablero tablero, Casilla casillaInicial) {
+		casilla = casillaInicial;
+		descripcionCasillaActual = casilla.agregarJugador(tablero, this, true);				
+	}
+
+	public boolean gano(Tablero tablero) {
+		return casilla==tablero.getCasilla(Tablero.CASILLA_FINAL);
 	}
 		
 	public void darTurno() {
@@ -103,8 +121,8 @@ public class Jugador implements IJugador, Serializable {
 
 	// INTERFACE
 	@Override
-	public int getCasillaActual() {
-		return casilla;
+	public Casilla getCasillaActual() {
+		return casilla;	// podría retornar la casilla
 	}
 
 	@Override

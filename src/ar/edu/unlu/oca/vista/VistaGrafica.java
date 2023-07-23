@@ -13,6 +13,7 @@ import ar.edu.unlu.oca.controlador.Controlador;
 import ar.edu.unlu.oca.gui.VentanaPrincipalGrafica;
 import ar.edu.unlu.oca.modelo.Ficha;
 import ar.edu.unlu.oca.modelo.IJugador;
+import ar.edu.unlu.oca.modelo.Tablero;
 import ar.edu.unlu.oca.gui.VentanaInicioSesion;
 
 public class VistaGrafica implements IVista {
@@ -56,15 +57,13 @@ public class VistaGrafica implements IVista {
 			}
 		});
 
-		
+
 	}
 	
 	@Override
 	public void mostrarJugadores(ArrayList<IJugador> usuarios) {
-		this.vPrincipal.actualizarListaUsuarios(usuarios);
+		this.vPrincipal.actualizarListaUsuarios(usuarios, controlador.getJugador());
 	}
-
-	
 		
 	public void iniciar() {
 		this.mostrarInicioSesion();
@@ -110,16 +109,22 @@ public class VistaGrafica implements IVista {
 	}
 
 	@Override
+	public void actualizarTablero(Tablero tablero) {
+		this.vPrincipal.actualizarTablero(tablero);
+	}
+	
+	@Override
 	public void mostrarTurno(IJugador jugadorActual) {
 		this.vPrincipal.activarDado(jugadorActual.getFicha()==controlador.getJugador().getFicha());
 	}
 
 	@Override
-	public void mostrarCasilla(String descripcionCasilla) {
-		// TODO Auto-generated method stub
-		
+	public void mostrarDescripcionCasilla(String descripcionCasilla) {
+		this.vPrincipal.imprimirDescripcion(descripcionCasilla);		
 	}
 
+	
+	
 	@Override
 	public void mostrarDado(String valorDado) {
 		// TODO Auto-generated method stub

@@ -31,9 +31,12 @@ public class CasillaOca extends Casilla {
 		appendDescripcion(" - OCA -> Avanza a la casilla "+Integer.toString(nuevaPosicion)+" (OCA) y vuelve a tirar");
 	}
 	
-	public String accion(Tablero tablero, Jugador jugador) {
-		jugador.moverFicha(tablero, this.nuevaPosicion - this.getPosicion());
-		jugador.darTurno();
+	@Override
+	public String accion(Tablero tablero, Jugador jugador, boolean movidaEspecial) {
+		if (!movidaEspecial) {			
+			jugador.moverFicha(tablero, this.nuevaPosicion - this.getPosicion(), true);
+			jugador.darTurno();
+		}
 		return getDescripcion();
 	}
 
