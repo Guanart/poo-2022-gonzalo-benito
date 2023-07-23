@@ -41,6 +41,7 @@ public class VentanaPrincipalGrafica extends JFrame {
 	private TableroGrafica boardLabel;
 	private JPanel backgroundPanel = new JPanel();
 	private JList playerList;
+	private JTextPane textPane;
 	private JButton botonDados;
 
 	/**
@@ -83,7 +84,7 @@ public class VentanaPrincipalGrafica extends JFrame {
     	
 		setContentPane(backgroundPanel);
 		
-		JTextPane textPane = new JTextPane();
+		textPane = new JTextPane();
 		textPane.setBounds(669, 210, 173, 97);
 		backgroundPanel.add(textPane);
 
@@ -117,7 +118,7 @@ public class VentanaPrincipalGrafica extends JFrame {
 	}
 
 	public void imprimirDescripcion(String descripcionCasilla) {
-//		.setText(descripcionCasilla);
+		textPane.setText(descripcionCasilla);
 		
 	}
 
@@ -125,7 +126,4 @@ public class VentanaPrincipalGrafica extends JFrame {
 		boardLabel.actualizarTablero(tablero);
 	}
 	
-    protected void paintComponent(Graphics g) {
-    
-    }
 }

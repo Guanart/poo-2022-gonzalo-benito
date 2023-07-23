@@ -71,11 +71,12 @@ public class Tablero implements Serializable {
 //		while (i < casillas.size()) {
 //			i++;
 //		}
+		// Al saltar de la 27 a la 33, salta a la casilla 3
 		int unidad = 60;
 		int direccion = DERECHA;
-		int limiteSupX = 600;
+		int limiteSupX = 620;
 		int limiteInfX = 0;
-		int limiteSupY = 420;
+		int limiteSupY = 375;
 		int limiteInfY = 0;
 		int x = -40;	// La primera x para la casilla 0 es x=20
 		int y = 375;
@@ -119,7 +120,7 @@ public class Tablero implements Serializable {
 				if (y + unidad < limiteSupY) {
 					y += unidad;
 				} else {
-					limiteSupY += unidad;
+					limiteSupY -= unidad;
 					direccion = DERECHA;
                     x += unidad;
 				}

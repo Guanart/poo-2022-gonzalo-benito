@@ -47,6 +47,7 @@ public class Controlador implements IControladorRemoto, Serializable {
 		case COMENZAR_PARTIDA:
 			// TODO: podría configurar algo especial al comienzo de la partida. Ej: orden de jugadores
 			actualizarTablero();
+			mostrarDescripcionCasilla();
 			mostrarTurno();
 			break;
 //		case LIMITE_JUGADORES:
@@ -56,6 +57,19 @@ public class Controlador implements IControladorRemoto, Serializable {
 //			mostrarDados();
 //			mostrarCasilla();
 //			break;
+			
+		case TURNO_PERDIDO:
+			mostrarDados();
+			actualizarTablero();
+			mostrarDescripcionCasilla();
+			mostrarTurno();
+			break;
+		case TURNO_GANADO:
+			mostrarDados();
+			actualizarTablero();
+			mostrarDescripcionCasilla();
+			mostrarTurno();
+			break;
 		case TURNO_TERMINADO:
 			mostrarDados();
 			actualizarTablero();
@@ -64,6 +78,7 @@ public class Controlador implements IControladorRemoto, Serializable {
 			break;
 		case FIN_JUEGO:
 			terminarJuego();
+			mostrarGanador();
 			break;
 		default:
 			break;
@@ -81,7 +96,6 @@ public class Controlador implements IControladorRemoto, Serializable {
 	// Así me ahorro los bucles for, y los try/catch
 
 	private void terminarJuego() {
-		mostrarGanador();
 		try {
 			for (IVista vista : vistas)
 				vista.nuevaPartida();
