@@ -1,8 +1,10 @@
 package ar.edu.unlu.oca.modelo.casillas;
 
 import java.io.Serializable;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
+import ar.edu.unlu.oca.modelo.IJugador;
 import ar.edu.unlu.oca.modelo.Jugador;
 import ar.edu.unlu.oca.modelo.Tablero;
 
@@ -11,6 +13,8 @@ public class Casilla implements Serializable {
 	private int posicion;
 	protected ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
 	private String descripcion;
+	private int x;
+	private int y;
 	
 	public Casilla(int i){
 		this.descripcion = "casilla "+Integer.toString(i);
@@ -51,4 +55,27 @@ public class Casilla implements Serializable {
 		jugadores.remove(jugador);
 	}
 
+	public boolean tieneJugadores() {
+		return !jugadores.isEmpty();
+	}
+
+	public ArrayList<IJugador> getJugadores() throws RemoteException {
+		return new ArrayList<IJugador>(jugadores);
+	}
+
+	public int getX() {
+		return x;
+	}
+
+	public void setX(int x) {
+		this.x = x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
+	public void setY(int y) {
+		this.y = y;
+	}
 }

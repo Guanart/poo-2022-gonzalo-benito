@@ -14,6 +14,7 @@ import ar.edu.unlu.oca.modelo.casillas.CasillaPuente;
 import ar.edu.unlu.oca.modelo.casillas.CasillaTransportar;
 
 public class Tablero implements Serializable {
+	private static final long serialVersionUID = -4802809576529065351L;
 	final static int CASILLA_INICIAL = 0;
     final static int CASILLA_FINAL = 63;
     final static int CASILLA_POSADA = 19;
@@ -33,6 +34,12 @@ public class Tablero implements Serializable {
     private final ArrayList<Integer> CASILLAS_PUENTE = new ArrayList<Integer>(Arrays.asList(6, 12));
     
 	private ArrayList<Casilla> casillas = new ArrayList<Casilla>();
+	
+	
+	private final int DERECHA = 0;
+	private final int ARRIBA = 1;
+	private final int IZQUIERDA = 2;
+	private final int ABAJO = 3;
 
 	public void inicializar(Queue<Jugador> jugadores) {		
 		for (int i=CASILLA_INICIAL; i<=CASILLA_FINAL; ++i) {	
@@ -60,11 +67,78 @@ public class Tablero implements Serializable {
 			casillas.add(casilla);	
 		}
 		
+//		int i = 0;
+//		while (i < casillas.size()) {
+//			i++;
+//		}
+		int unidad = 60;
+		int direccion = DERECHA;
+		int limiteSupX = 600;
+		int limiteInfX = 0;
+		int limiteSupY = 420;
+		int limiteInfY = 0;
+		int x = -40;	// La primera x para la casilla 0 es x=20
+		int y = 375;
+		// Coordenadas para Interfaz Gráfica
+		for (Casilla casilla : casillas) {
+			switch (direccion) {
+			case DERECHA:
+                if (x + unidad < limiteSupX) {
+                    x += unidad;
+                } else {
+                	limiteSupX -= unidad;
+                    direccion = ARRIBA;
+                    y -= unidad;
+                }
+    			casilla.setX(x);
+    			casilla.setY(y);
+                break;
+			case ARRIBA:
+				if (y - unidad > limiteInfY) {
+					y -= unidad;
+				} else {
+					limiteInfY += unidad;
+					direccion = IZQUIERDA;
+                    x -= unidad;
+				}
+    			casilla.setX(x);
+    			casilla.setY(y);
+				break;
+			case IZQUIERDA:
+                if (x - unidad > limiteInfX) {
+                    x -= unidad;
+                } else {
+                	limiteInfX += unidad;
+                    direccion = ABAJO;
+                    y += unidad;
+                }
+    			casilla.setX(x);
+    			casilla.setY(y);
+                break;
+			case ABAJO:
+				if (y + unidad < limiteSupY) {
+					y += unidad;
+				} else {
+					limiteSupY += unidad;
+					direccion = DERECHA;
+                    x += unidad;
+				}
+    			casilla.setX(x);
+    			casilla.setY(y);
+				break;
+			}
+		}
+		
 		for (Jugador jugador : jugadores) {		
 			jugador.inicializar(this, getCasilla(CASILLA_INICIAL));
 		}
 	}
 	
+	
+	public ArrayList<Casilla> getCasillas() {
+		return casillas;
+	}
+
 	public Casilla getCasilla(int nroCasilla) {
 		return casillas.get(nroCasilla);
 	}

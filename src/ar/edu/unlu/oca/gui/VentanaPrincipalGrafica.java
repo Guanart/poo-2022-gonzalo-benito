@@ -37,7 +37,8 @@ import java.awt.Window.Type;
 
 public class VentanaPrincipalGrafica extends JFrame {
 
-	private JLabel boardLabel;
+//	private JLabel boardLabel;
+	private TableroGrafica boardLabel;
 	private JPanel backgroundPanel = new JPanel();
 	private JList playerList;
 	private JButton botonDados;
@@ -48,27 +49,18 @@ public class VentanaPrincipalGrafica extends JFrame {
 	public VentanaPrincipalGrafica() {
 		setResizable(false);
 		backgroundPanel.setBackground(new Color(204, 153, 51));
-//		backgroundPanel.setBackground(Color.white);
 		backgroundPanel.setLayout(null);
 
 		setTitle("Juego de la Oca");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 894, 521);
-		
-		URL path = getClass().getResource("../resources/images/tablero_original.jpg");
-		BufferedImage tablero = null;
-		try {
-			tablero = ImageIO.read(path);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		ImageIcon tablero1 = new ImageIcon(tablero.getScaledInstance(600,400,Image.SCALE_SMOOTH));
-		
-		boardLabel = new JLabel();
-		boardLabel.setBounds(32, 33, 610, 410);
-		boardLabel.setBorder(new EmptyBorder(5, 5, 5, 5));
+				
+//		boardLabel = new JLabel();
+		boardLabel = new TableroGrafica();
+		boardLabel.setBounds(32, 33, 600, 420);
+		boardLabel.setBorder(new EmptyBorder(0, 0, 0, 0));
 //		ImageIcon tablero1 = new ImageIcon(tablero.getScaledInstance(boardLabel.getWidth(),boardLabel.getHeight(),Image.SCALE_REPLICATE));
-		boardLabel.setIcon(tablero1);
+//		boardLabel.setIcon(tablero1);
 		backgroundPanel.add(boardLabel);
 
 		
@@ -125,13 +117,12 @@ public class VentanaPrincipalGrafica extends JFrame {
 	}
 
 	public void imprimirDescripcion(String descripcionCasilla) {
-		boardLabel.setText(descripcionCasilla);
+//		.setText(descripcionCasilla);
 		
 	}
 
 	public void actualizarTablero(Tablero tablero) {
-		boardLabel.repaint();
-		
+		boardLabel.actualizarTablero(tablero);
 	}
 	
     protected void paintComponent(Graphics g) {

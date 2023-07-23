@@ -120,7 +120,7 @@ public class Juego extends ObservableRemoto implements IJuego, Serializable {
 		return jugadores.peek();
 	}
 	
-	public Tablero getTablero() {
+	public Tablero getTablero() throws RemoteException {
 		return tablero;
 	}
  

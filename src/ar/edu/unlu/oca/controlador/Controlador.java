@@ -46,6 +46,7 @@ public class Controlador implements IControladorRemoto, Serializable {
 			break;
 		case COMENZAR_PARTIDA:
 			// TODO: podría configurar algo especial al comienzo de la partida. Ej: orden de jugadores
+			actualizarTablero();
 			mostrarTurno();
 			break;
 //		case LIMITE_JUGADORES:
@@ -57,6 +58,7 @@ public class Controlador implements IControladorRemoto, Serializable {
 //			break;
 		case TURNO_TERMINADO:
 			mostrarDados();
+			actualizarTablero();
 			mostrarDescripcionCasilla();
 			mostrarTurno();
 			break;
