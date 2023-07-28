@@ -17,9 +17,6 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.FormSpecs;
 import com.jgoodies.forms.layout.RowSpec;
 
-import ar.edu.unlu.chatmvc.modelo.IMensaje;
-import ar.edu.unlu.chatmvc.modelo.IUsuario;
-import ar.edu.unlu.todo.vista.Estados;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -33,6 +30,7 @@ import javax.swing.SwingUtilities;
 
 public class VentanaPrincipalConsola extends JFrame {
 	
+	private static final long serialVersionUID = 9137138318622948232L;
 	private JPanel contentPane;
 	private JTextField textInput;
 	private JButton btnEnviar;

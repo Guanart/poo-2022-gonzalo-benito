@@ -5,9 +5,11 @@ import ar.edu.unlu.oca.modelo.Tablero;
 
 public class CasillaDado extends Casilla {
 
+	private static final long serialVersionUID = -5796492652177641110L;
+
 	public CasillaDado(int posicion) {
 		super(posicion);
-		appendDescripcion(" - DADO -> Avanza %d casillas");
+		appendDescripcion("(*) DADO => Avanza %d casillas");
 	}
 	
 	@Override

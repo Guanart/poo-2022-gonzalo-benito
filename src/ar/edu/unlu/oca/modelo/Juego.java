@@ -27,7 +27,22 @@ public class Juego extends ObservableRemoto implements IJuego, Serializable {
 		System.out.println("Se levantó el servidor");
 	}
 
+	// Partida en juego
+	public void iniciarJuego() throws RemoteException {
+		if (jugadores.size()==cantJugadores) {
+			tablero.inicializar(jugadores);
+			descripcionUltimaCasilla = "La partida ha comenzado! Comienza el jugador "+jugadores.peek().getNombre();
+			notificarObservadores(Eventos.COMENZAR_PARTIDA);
+			System.out.println(descripcionUltimaCasilla);
+			System.out.println("------------------------------------");
+		}
+
+	}
 	
+	private void terminarJuego() {
+		System.out.println("Partida terminada");
+	}	
+
 	// Configuracion
 	public ArrayList<IJugador> getJugadores() throws RemoteException {
 		return new ArrayList<IJugador>(jugadores);
@@ -49,34 +64,33 @@ public class Juego extends ObservableRemoto implements IJuego, Serializable {
 		try {
 			jugadores.add(jugador);
 			notificarObservadores(Eventos.JUGADOR_AGREGADO);
-			System.out.println("Jugador agregado");
-			System.out.println(jugador);
+			System.out.println("El jugador "+jugador.getNombre()+" ("+jugador.getFicha()+") ha entrado a la partida");
 		} catch (IllegalStateException e) {
 			notificarObservadores(Eventos.LIMITE_JUGADORES);
 		}
 		
 		return jugador;
 	}
-	
-	// Partida en juego
-	public void iniciarJuego() throws RemoteException {
-//		turnoJugador = 0;		// arranca el primer jugador del ArrayList -> TODO: tirar dados para ver quien arranca
-//		jugadores.peek().darTurno();
-		if (jugadores.size()==cantJugadores) {
-			tablero.inicializar(jugadores);
-			notificarObservadores(Eventos.COMENZAR_PARTIDA);
-			System.out.println("Partida iniciada");
+		
+	@Override
+	public void salir(IJugador jugadorSalir) throws RemoteException {
+		for (Jugador jugador : jugadores) {
+			if (jugador.getFicha()==jugadorSalir.getFicha()) {
+				jugadores.remove(jugador);			
+				System.out.println("El jugador "+jugador.getNombre()+" ("+jugador.getFicha()+") se ha retirado de la partida");
+			}
 		}
 
+		if (jugadores.isEmpty()) {
+			terminarJuego();	
+		} else {
+			notificarObservadores(Eventos.JUGADOR_ELIMINADO);
+		}
 	}
-	
-	private void terminarJuego() throws RemoteException {
-		System.out.println("Partida terminada");
-	}	
 	
 	public void cerrar() {
 		System.out.println("Se cerró el servidor");
-		System.exit(0);
+//		System.exit(0);
 	}
 
 
@@ -85,29 +99,30 @@ public class Juego extends ObservableRemoto implements IJuego, Serializable {
 	}
 
 
-	public void jugarTurno() throws RemoteException {
+	public IJugador jugarTurno() throws RemoteException {
 		Jugador jugador = jugadores.peek();
 		System.out.println("Turno de: "+jugador.getNombre());
 		Eventos evento = jugador.jugar(tablero, dado);
+//		String lanzamiento = "Lanzó: "+jugador.getUltimaTirada();
+//		descripcionUltimaCasilla = "El jugador "+jugador.getNombre()+" ("+jugador.getFicha()+") lanzó "+jugador.getUltimaTirada()+" y avanza a la "+jugador.getDescripcionCasillaActual();
 		descripcionUltimaCasilla = jugador.getDescripcionCasillaActual();
-		System.out.println("Lanzó: "+jugador.getUltimaTirada());
 		System.out.println(descripcionUltimaCasilla);
 		System.out.println(evento);
 		System.out.println("------------------------------------");
 
 		if (jugador.gano(tablero)) {
+			descripcionUltimaCasilla += "\nEl jugador "+jugador.getNombre()+" ha ganado!";
 			notificarObservadores(Eventos.FIN_JUEGO);
 			terminarJuego();
+			return jugador;
 		}
 
 		if (evento != Eventos.TURNO_GANADO) {
 			jugadores.add(jugadores.poll());
 		}
 		
-		notificarObservadores(evento);
-//		descripcionUltimaCasilla = tablero.getCasilla(nuevaPosicion).accion(jugadorActual); 
-//		notificarObservadores(Eventos.MOSTRAR_CASILLA_DADOS);
-			
+		notificarObservadores(evento);	
+		return jugador;
 	}
 
 
@@ -122,7 +137,6 @@ public class Juego extends ObservableRemoto implements IJuego, Serializable {
 	
 	public Tablero getTablero() throws RemoteException {
 		return tablero;
-	}
- 
+	} 
 
 }

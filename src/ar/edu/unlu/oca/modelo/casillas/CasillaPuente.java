@@ -9,7 +9,7 @@ public class CasillaPuente extends Casilla {
 	public CasillaPuente(int i) {
 		super(i);
 		this.nuevaPosicion = 19;
-		appendDescripcion(" - PUENTE -> Avanza a la casilla "+Integer.toString(nuevaPosicion)+" (POSADA) y pierde un turno");
+		appendDescripcion("(*) PUENTE => Avanza a la casilla "+Integer.toString(nuevaPosicion)+" (POSADA) y pierde un turno");
 	}
 
 	@Override

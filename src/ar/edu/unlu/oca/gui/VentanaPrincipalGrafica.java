@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -34,15 +35,20 @@ import javax.swing.border.EtchedBorder;
 import java.awt.Color;
 import javax.swing.JTextPane;
 import java.awt.Window.Type;
+import java.awt.Font;
 
 public class VentanaPrincipalGrafica extends JFrame {
 
-//	private JLabel boardLabel;
+	private static final long serialVersionUID = -3016795147387382990L;
+	//	private JLabel boardLabel;
 	private TableroGrafica boardLabel;
 	private JPanel backgroundPanel = new JPanel();
 	private JList playerList;
 	private JTextPane textPane;
 	private JButton botonDados;
+	private Icon dadoIcon;
+	private Icon prohibidoIcon;
+	private JLabel labelTurno;
 
 	/**
 	 * Create the frame.
@@ -73,10 +79,14 @@ public class VentanaPrincipalGrafica extends JFrame {
 				
 		playerList = new JList();
 		playerList.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), "Jugadores", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		playerList.setBounds(671, 33, 171, 154);
+		playerList.setBounds(671, 33, 171, 109);
 		backgroundPanel.add(playerList);
     			
-    	botonDados = new JButton(new ImageIcon(getClass().getResource("../resources/images/dado.png")));
+		dadoIcon = new ImageIcon(getClass().getResource("../resources/images/dado.png"));
+		prohibidoIcon = new ImageIcon(getClass().getResource("../resources/images/prohibido.png"));
+
+		botonDados = new JButton(dadoIcon);
+		botonDados.setIcon(dadoIcon);
     	botonDados.setBackground(new Color(204, 153, 0));
     	botonDados.setBounds(688, 334, 133, 109);
     	botonDados.setEnabled(false);
@@ -85,19 +95,33 @@ public class VentanaPrincipalGrafica extends JFrame {
 		setContentPane(backgroundPanel);
 		
 		textPane = new JTextPane();
-		textPane.setBounds(669, 210, 173, 97);
+		textPane.setEditable(false);
+		textPane.setBounds(671, 164, 173, 118);
 		backgroundPanel.add(textPane);
+		
+		labelTurno = new JLabel("Turno de: ");
+		labelTurno.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 12));
+		labelTurno.setBounds(671, 305, 171, 14);
+		backgroundPanel.add(labelTurno);
 
 	}
 	
 	public void onClickDados(ActionListener listener) {
 		this.botonDados.addActionListener(listener);
 	}
-
+	
+	public void onSpaceDados(KeyListener listener) {
+		this.addKeyListener(listener);;
+		
+	}
 
 	@SuppressWarnings("unchecked")
 	public void actualizarListaUsuarios(ArrayList<IJugador> usuarios, IJugador jugadorControlador) {
 		this.playerList.setModel(new AbstractListModel() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 4488607247284152097L;
 			@Override
 			public Object getElementAt(int arg0) {
 				IJugador jugador = usuarios.get(arg0);
@@ -112,18 +136,30 @@ public class VentanaPrincipalGrafica extends JFrame {
 			}
 		});	
 	}
-
-	public void activarDado(boolean activar) {
-		botonDados.setEnabled(activar);
+	
+	public void activarDado(boolean enable) {
+		botonDados.setEnabled(enable);
+	}
+	
+	public void activarDado(IJugador jugadorControlador) {
+		if (jugadorControlador.turnosPerdidos() > 0 || jugadorControlador.estaEnPozo()) {
+			botonDados.setIcon(prohibidoIcon);
+		} else {			
+			botonDados.setIcon(dadoIcon);
+		}
+		botonDados.repaint();
 	}
 
 	public void imprimirDescripcion(String descripcionCasilla) {
 		textPane.setText(descripcionCasilla);
-		
 	}
 
 	public void actualizarTablero(Tablero tablero) {
 		boardLabel.actualizarTablero(tablero);
 	}
-	
+
+	public void mostrarTurno(IJugador jugadorActual) {
+		labelTurno.setText("Turno de: "+jugadorActual.getNombre()+" ("+jugadorActual.getFicha()+")");
+	}
+
 }

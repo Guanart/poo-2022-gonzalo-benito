@@ -13,6 +13,7 @@ import ar.edu.unlu.oca.controlador.Controlador;
 import ar.edu.unlu.oca.gui.VentanaPrincipalConsola;
 import ar.edu.unlu.oca.modelo.Ficha;
 import ar.edu.unlu.oca.modelo.IJugador;
+import ar.edu.unlu.oca.modelo.Tablero;
 
 public class VistaConsola extends JFrame implements IVista {
 
@@ -29,9 +30,10 @@ public class VistaConsola extends JFrame implements IVista {
 	private String fichaJugadorActual;
 
 	public VistaConsola(Controlador controlador) {
+		super();
 		setControlador(controlador);
+		
 		this.vPrincipal = new VentanaPrincipalConsola();
-		// Agrega el comportamiento (ActionListener) que debe efectuar al hacer click
 		this.vPrincipal.onClickEnviar(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -43,7 +45,8 @@ public class VistaConsola extends JFrame implements IVista {
 		this.vPrincipal.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent arg0) {
-				controlador.cerrarApp();
+				controlador.salir();
+				System.exit(0);
 			}
 		});
 
@@ -60,7 +63,7 @@ public class VistaConsola extends JFrame implements IVista {
 				verHistorico();
 				break;
 			case "3":
-				controlador.cerrarApp();
+				controlador.salir();
 				break;
 			default:
 				println("Opción no válida");
@@ -210,16 +213,9 @@ public class VistaConsola extends JFrame implements IVista {
 	 */
 	
 	@Override
-	public void iniciarPartida() {
-		estadoActual = OpcionesMenuNuevaPartida.INICIAR;
-		controlador.iniciarPartida();
-	}
-
-	@Override
-	public void mostrarTurno(IJugador jugador) {
+	public void mostrarTurno(IJugador jugadorActual) {
 		println("------------------------------------------------");
-		println("Es el turno del jugador: "+jugador.getNombre());
-		println("Casilla actual: "+Integer.toString(jugador.getCasillaActual()));
+		println("Es el turno del jugador: "+jugadorActual.getNombre());
 		println("1) Tirar dados y avanzar");
 	}
 
@@ -238,6 +234,24 @@ public class VistaConsola extends JFrame implements IVista {
 	public void mostrarGanador(IJugador jugador) {
 		estadoActual = OpcionesMenuPrincipal.NUEVA_PARTIDA;
 		println("EL JUGADOR: "+jugador.getNombre()+" HA GANADO");		
+	}
+
+	@Override
+	public void mostrarDescripcionCasilla(String descripcionCasilla) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void actualizarTablero(Tablero tablero) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void terminarJuego(IJugador iJugador) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

@@ -22,6 +22,10 @@ import ar.edu.unlu.oca.modelo.Tablero;
 import ar.edu.unlu.oca.modelo.casillas.Casilla;
 
 public class TableroGrafica extends JPanel  {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 9192330162075045419L;
 	private Tablero tablero;
 	private int fichaAncho = 25;
 	private int fichaAlto = 25;

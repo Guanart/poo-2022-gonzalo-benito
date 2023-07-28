@@ -17,7 +17,7 @@ public class Casilla implements Serializable {
 	private int y;
 	
 	public Casilla(int i){
-		this.descripcion = "casilla "+Integer.toString(i);
+		this.descripcion = "casilla "+Integer.toString(i)+"\n";
 		this.posicion = i;
 	}
 	

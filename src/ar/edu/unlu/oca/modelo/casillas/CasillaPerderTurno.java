@@ -11,18 +11,20 @@ public class CasillaPerderTurno extends Casilla {
 		switch (i) {
 		case 19:
 			this.cantTurnos = 1;
-			appendDescripcion(" - POSADA -> Pierde un turno");
+			appendDescripcion("(*) POSADA => Pierde un turno");
 			break;
 		case 56:
 			this.cantTurnos = 2;
-			appendDescripcion(" - CARCEL -> Pierde dos turnos");
+			appendDescripcion("(*) CARCEL => Pierde dos turnos");
 			break;
 		}
 	}
 
 	@Override
 	public String accion(Tablero tablero, Jugador jugador, boolean movidaEspecial) {
-		jugador.incTurnoPerdido(cantTurnos);
+		if (!movidaEspecial) {			
+			jugador.incTurnoPerdido(cantTurnos);
+		}
 		return getDescripcion();
 	}
 

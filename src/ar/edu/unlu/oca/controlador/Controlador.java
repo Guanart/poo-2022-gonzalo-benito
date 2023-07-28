@@ -44,6 +44,9 @@ public class Controlador implements IControladorRemoto, Serializable {
 		case JUGADOR_AGREGADO:
 			mostrarJugadores();
 			break;
+		case JUGADOR_ELIMINADO:
+			mostrarJugadores();
+			break;
 		case COMENZAR_PARTIDA:
 			// TODO: podría configurar algo especial al comienzo de la partida. Ej: orden de jugadores
 			actualizarTablero();
@@ -53,38 +56,38 @@ public class Controlador implements IControladorRemoto, Serializable {
 //		case LIMITE_JUGADORES:
 //			
 //			break;
-//		case MOSTRAR_CASILLA_DADOS:		// PODRIA SER LO MISMO QUE TURNO_TERMINADO
-//			mostrarDados();
-//			mostrarCasilla();
-//			break;
 			
+		case ESTA_EN_POZO:
+			actualizarTablero();
+			mostrarDescripcionCasilla();
+			mostrarTurno();
+			break;
 		case TURNO_PERDIDO:
-			mostrarDados();
 			actualizarTablero();
 			mostrarDescripcionCasilla();
 			mostrarTurno();
 			break;
 		case TURNO_GANADO:
-			mostrarDados();
 			actualizarTablero();
 			mostrarDescripcionCasilla();
 			mostrarTurno();
 			break;
 		case TURNO_TERMINADO:
-			mostrarDados();
 			actualizarTablero();
 			mostrarDescripcionCasilla();
 			mostrarTurno();
 			break;
 		case FIN_JUEGO:
+			actualizarTablero();
+			mostrarDescripcionCasilla();
 			terminarJuego();
-			mostrarGanador();
 			break;
 		default:
 			break;
 		}		
 	}
 	
+
 	/*
 	 * ###########################
 	 * ACTUALIZACIONES DE LA VISTA
@@ -98,7 +101,7 @@ public class Controlador implements IControladorRemoto, Serializable {
 	private void terminarJuego() {
 		try {
 			for (IVista vista : vistas)
-				vista.nuevaPartida();
+				vista.terminarJuego(modelo.getJugadorActual());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -106,25 +109,25 @@ public class Controlador implements IControladorRemoto, Serializable {
 
 	}
 
-	private void mostrarGanador() {
-		try {
-			for (IVista vista : vistas)
-				vista.mostrarGanador(modelo.getJugadorActual());
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}		
-	}
+//	private void mostrarGanador() {
+//		try {
+//			for (IVista vista : vistas)
+//				vista.mostrarGanador(modelo.getJugadorActual());
+//		} catch (RemoteException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}		
+//	}
 
-	private void mostrarDados() {
-		try {
-			for (IVista vista : vistas)
-				vista.mostrarDado(modelo.mostrarDado());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}				
-	}
+//	private void mostrarDados() {
+//		try {
+//			for (IVista vista : vistas)
+//				vista.mostrarDado(modelo.mostrarDado());
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}				
+//	}
 
 	private void mostrarDescripcionCasilla() {
 		try {
@@ -136,6 +139,16 @@ public class Controlador implements IControladorRemoto, Serializable {
 		}		
 		
 	}
+	
+//	private void mostrarDados() {
+//		try {
+//			for (IVista vista : vistas)
+//				vista.mostrarDados(modelo.getJugadorActual());
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}				
+//	}
 
 	private void mostrarTurno() {
 		try {
@@ -188,7 +201,7 @@ public class Controlador implements IControladorRemoto, Serializable {
 
 	public void jugarTurno() {
 		try {
-			modelo.jugarTurno();
+			this.jugador = modelo.jugarTurno();
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -220,19 +233,17 @@ public class Controlador implements IControladorRemoto, Serializable {
 		}			
 	}
 	
-	// TODO: con RMI, debería cerrar la vista creo
-	public void cerrarApp() {
-		try {
-			this.modelo.cerrar();  	// TODO -> cerrar correctamente, de manera no brusca
-			System.exit(0);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}		
-	}
-
 	public IJugador getJugador() {
 		return this.jugador;
+	}
+
+	public void salir() {
+		try {
+			modelo.salir(jugador);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

@@ -13,9 +13,9 @@ public class Jugador implements IJugador, Serializable {
 	private int turnosExtra = 0;
 	private int turnosPerdidos = 0;
 	private String nombre;
-	private int ultimaTirada;	// El ultimo dado obtenido
 	private String descripcionCasillaActual;	
 	private final int CASILLA_FINAL = 63;
+	private int ultimaTirada;
 
 	
 	public Jugador(String nombre, Ficha ficha) {
@@ -28,19 +28,21 @@ public class Jugador implements IJugador, Serializable {
 	public Eventos jugar(Tablero tablero, Dado dado) {
 		if (turnosPerdidos > 0) {
 			turnosPerdidos--;
+			descripcionCasillaActual = "El jugador "+nombre+" ("+ficha+") pierde un turno.\nTurnos perdidos restantes: "+turnosPerdidos;
 			return Eventos.TURNO_TERMINADO;
 		}
 		else if (estaEnPozo) {
+			descripcionCasillaActual = "El jugador "+nombre+" ("+ficha+") se encuentra en el pozo y no puede moverse hasta ser liberado";
 			return Eventos.TURNO_TERMINADO;
 		}
+
 		moverFicha(tablero, dado.tirar(), false);
-		System.out.println("Turnos extra: "+turnosExtra);
-		System.out.println("Turnos perdidos: "+turnosPerdidos);
 		if (turnosExtra > 0) {
 			turnosExtra--;
 			return Eventos.TURNO_GANADO;
 		}
 		else if (turnosPerdidos > 0) {
+			descripcionCasillaActual += "\nTurnos perdidos restantes: " + turnosPerdidos;
 			return Eventos.TURNO_PERDIDO;
 		}
 		else if (estaEnPozo) {
@@ -54,7 +56,9 @@ public class Jugador implements IJugador, Serializable {
 	 * var movidaEspecial indica si se mueve la ficha por el lanzamiento de dados, o por una acción de una casilla ; evita bucles al ejecutar moverFicha()
 	 */
 	public void moverFicha(Tablero tablero, int cantCasillas, boolean movidaEspecial) {
-		this.ultimaTirada = cantCasillas;		// ???????????
+		if (!movidaEspecial) {
+			this.ultimaTirada = cantCasillas;
+		}
 		// Estoy en la 61, saco 4 -> debo quedar en la 61
 		int aux = casilla.getPosicion() + cantCasillas;
 		Casilla casillaAnterior = casilla;		// Podria validar cual es la casilla anterior, y tomar una decision con la accion de la casilla
@@ -66,13 +70,18 @@ public class Jugador implements IJugador, Serializable {
 		}
 		
 		// Verifica si pasó por el pozo
+		String jugadoresLiberados = "";
 		if (casilla.getPosicion()>=Tablero.CASILLA_POZO && casillaAnterior.getPosicion()<Tablero.CASILLA_POZO) {
-			tablero.getCasillaPozo().liberarJugadores();
+			jugadoresLiberados = "\n"+tablero.getCasillaPozo().liberarJugadores();
 		}
 		
 		// Modifica el estado del tablero (casillas)
 		casillaAnterior.eliminarJugador(this);
-		descripcionCasillaActual = casilla.agregarJugador(tablero, this, movidaEspecial);		
+		String descNuevaCasilla = casilla.agregarJugador(tablero, this, movidaEspecial);
+		if (!movidaEspecial) {
+			this.descripcionCasillaActual = "El jugador "+nombre+" ("+ficha+") lanzó "+cantCasillas+" y avanza a la "+descNuevaCasilla;
+		}
+		descripcionCasillaActual += jugadoresLiberados;
 	}
 	
 	public void inicializar(Tablero tablero, Casilla casillaInicial) {
@@ -88,12 +97,6 @@ public class Jugador implements IJugador, Serializable {
 		turnosExtra++;
 	}
 	
-//	public int saltarCasilla(int nuevaCasilla) {
-//		
-//		this.casilla = nuevaCasilla;
-//		return casilla;
-//	}
-
 	public void setPozo() {
 		estaEnPozo = true;
 	}
@@ -102,12 +105,12 @@ public class Jugador implements IJugador, Serializable {
 		return estaEnPozo;
 	}
 	
-	public void liberarDelPozo() {
-		estaEnPozo = false;
-	}
-
-	public int getUltimaTirada() {
-		return this.ultimaTirada;
+	public boolean liberarDelPozo() {
+		if (estaEnPozo) {			
+			estaEnPozo = false;
+			return true;
+		}
+		return false;
 	}
 	
 	public void incTurnoPerdido(int turnos) {
@@ -122,7 +125,7 @@ public class Jugador implements IJugador, Serializable {
 	// INTERFACE
 	@Override
 	public Casilla getCasillaActual() {
-		return casilla;	// podría retornar la casilla
+		return casilla;
 	}
 
 	@Override
@@ -137,6 +140,15 @@ public class Jugador implements IJugador, Serializable {
 
 	public String getDescripcionCasillaActual() {
 		return descripcionCasillaActual;
+	}
+
+	@Override
+	public int turnosPerdidos() {
+		return turnosPerdidos;
+	}
+
+	public int getUltimaTirada() {
+		return this.ultimaTirada;
 	}
 
 }

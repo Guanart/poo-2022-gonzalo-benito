@@ -13,9 +13,9 @@ public interface IJuego extends IObservableRemoto {
 	ArrayList<IJugador> getJugadores() throws RemoteException;
 	EnumSet<Ficha> fichasDisponibles() throws RemoteException;
 	IJugador getJugadorActual() throws RemoteException;
-	void jugarTurno() throws RemoteException;
+	IJugador jugarTurno() throws RemoteException;
 	String getCasillaActual() throws RemoteException;
 	String mostrarDado() throws RemoteException;
-	void cerrar() throws RemoteException;
 	Tablero getTablero() throws RemoteException;
+	void salir(IJugador jugador) throws RemoteException;
 }

@@ -7,18 +7,22 @@ public class CasillaPozo extends Casilla {
 
 	public CasillaPozo(int i) {
 		super(i);
-		appendDescripcion(" - POZO -> El jugador no podrá moverse hasta que otro jugador lo libere (que pase por la casilla POZO)");
+		appendDescripcion("(*) POZO => El jugador no podrá moverse hasta que otro jugador lo libere (que pase por la casilla POZO)");
 	}
 	
-	public String accion(Tablero tablero, Jugador jugador) {
+	public String accion(Tablero tablero, Jugador jugador, boolean movidaEspecial) {
 		jugador.setPozo();
 		return getDescripcion();
 	}
 
-	public void liberarJugadores() {
+	public String liberarJugadores() {
+		String jugadoresLiberados = "";
 		for (Jugador jugador : jugadores) {
-			jugador.liberarDelPozo();
-		}		
+			if (jugador.liberarDelPozo()) {
+				jugadoresLiberados += "El jugador "+jugador.getNombre()+" ("+jugador.getFicha()+") ha sido liberado del pozo!\n";
+			}
+		}
+		return jugadoresLiberados;
 	}
 
 }

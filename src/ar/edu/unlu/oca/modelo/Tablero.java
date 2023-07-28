@@ -15,7 +15,7 @@ import ar.edu.unlu.oca.modelo.casillas.CasillaTransportar;
 
 public class Tablero implements Serializable {
 	private static final long serialVersionUID = -4802809576529065351L;
-	final static int CASILLA_INICIAL = 0;
+	final static int CASILLA_INICIAL = 1;
     final static int CASILLA_FINAL = 63;
     final static int CASILLA_POSADA = 19;
     // No podrás volver a tirar el dado hasta que otro jugador pase por esa casilla
@@ -42,7 +42,7 @@ public class Tablero implements Serializable {
 	private final int ABAJO = 3;
 
 	public void inicializar(Queue<Jugador> jugadores) {		
-		for (int i=CASILLA_INICIAL; i<=CASILLA_FINAL; ++i) {	
+		for (int i=0; i<=CASILLA_FINAL; ++i) {	
 			Casilla casilla;
 			if (CASILLAS_DADO.contains(i)) {
 				casilla = new CasillaDado(i);

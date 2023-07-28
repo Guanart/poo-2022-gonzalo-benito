@@ -13,11 +13,11 @@ public class CasillaTransportar extends Casilla {
 		switch (i) {
 		case CASILLA_LABERINTO:
 			this.nuevaPosicion = 30;
-			appendDescripcion(" - LABERINTO -> Retrocede a la casilla 30");
+			appendDescripcion("(*) LABERINTO => Retrocede a la casilla 30");
 			break;
 		case CASILLA_CALAVERA:
 			this.nuevaPosicion = 1;
-			appendDescripcion(" - CALAVERA -> Retrocede a la casilla 1");
+			appendDescripcion("(*) CALAVERA => Retrocede a la casilla 1");
 			break;
 		}
 	}

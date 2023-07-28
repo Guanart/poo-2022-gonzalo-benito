@@ -28,7 +28,7 @@ public class CasillaOca extends Casilla {
 	public CasillaOca(int i) {
 		super(i);
 		this.nuevaPosicion = CASILLAS_OCA.get(i);
-		appendDescripcion(" - OCA -> Avanza a la casilla "+Integer.toString(nuevaPosicion)+" (OCA) y vuelve a tirar");
+		appendDescripcion("(*) OCA => Avanza a la casilla "+Integer.toString(nuevaPosicion)+" (OCA) y vuelve a tirar");
 	}
 	
 	@Override

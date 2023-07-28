@@ -2,6 +2,8 @@ package ar.edu.unlu.oca.vista;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
@@ -18,7 +20,6 @@ import ar.edu.unlu.oca.gui.VentanaInicioSesion;
 
 public class VistaGrafica implements IVista {
 
-
 	private VentanaInicioSesion vInicioSesion;
 	private VentanaPrincipalGrafica vPrincipal;
 	private Controlador controlador;
@@ -34,21 +35,27 @@ public class VistaGrafica implements IVista {
 		this.vInicioSesion.onClickIniciar(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				controlador.cargarJugador(vInicioSesion.getNombreUsuario(), vInicioSesion.getFicha());
-				mostrarJuego();
+				String usuario = vInicioSesion.getNombreUsuario().trim();
+				int ficha = vInicioSesion.getFicha();
+				if (!usuario.isBlank() && ficha != 0) {					
+					controlador.cargarJugador(usuario, ficha);
+					mostrarJuego();
+				} else {
+					JOptionPane.showMessageDialog(vInicioSesion, "Ingrese un nombre y seleccione una ficha", "Error", JOptionPane.WARNING_MESSAGE);
+				}
 			}
 		});
+		
 		this.vPrincipal.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent arg0) {
-		        if (JOptionPane.showConfirmDialog(vPrincipal, 
-			            "¿Estás seguro que quieres salir de la partida?", "¿Cerrar juego?", 
-			            JOptionPane.YES_NO_OPTION,
-			            JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
-			            controlador.cerrarApp();
-			            System.exit(0);
-			        }
-			}			
+				if (JOptionPane.showConfirmDialog(vPrincipal, "¿Estás seguro que quieres salir de la partida?",
+						"¿Cerrar juego?", JOptionPane.YES_NO_OPTION,
+						JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+					controlador.salir();
+					System.exit(0);
+				}
+			}
 		});
 		
 		this.vPrincipal.onClickDados(new ActionListener() {
@@ -56,17 +63,23 @@ public class VistaGrafica implements IVista {
 				controlador.jugarTurno();
 			}
 		});
-
-
-	}
-	
-	@Override
-	public void mostrarJugadores(ArrayList<IJugador> usuarios) {
-		this.vPrincipal.actualizarListaUsuarios(usuarios, controlador.getJugador());
-	}
 		
-	public void iniciar() {
-		this.mostrarInicioSesion();
+		this.vPrincipal.onSpaceDados(new KeyListener() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				controlador.jugarTurno();
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+			}
+		});
 	}
 	
 	private void mostrarJuego() {
@@ -78,7 +91,21 @@ public class VistaGrafica implements IVista {
 		this.vInicioSesion.setVisible(true);
 		this.vPrincipal.setVisible(false);
 	}
-
+	
+	public void imprimirTexto(String texto) {
+		this.vPrincipal.imprimirDescripcion(texto);
+	}
+	
+	@Override
+	public void mostrarJugadores(ArrayList<IJugador> usuarios) {
+		this.vPrincipal.actualizarListaUsuarios(usuarios, controlador.getJugador());
+	}
+		
+	@Override
+	public void iniciar() {
+		this.mostrarInicioSesion();
+	}
+	
 	@Override
 	public void setControlador(Controlador controlador) {
 		this.controlador = controlador;
@@ -86,26 +113,13 @@ public class VistaGrafica implements IVista {
 	}
 
 	@Override
-	public void nuevaPartida() {
-		// TODO Auto-generated method stub
-		
+	public void terminarJuego(IJugador jugador) {
+		this.vPrincipal.activarDado(false);
 	}
 
 	@Override
 	public void mostrarFichas(EnumSet<Ficha> fichasDisponibles) {
 		this.vInicioSesion.mostrarFichas(fichasDisponibles);
-	}
-
-	@Override
-	public void cargarJugador(String input) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void iniciarPartida() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -116,25 +130,13 @@ public class VistaGrafica implements IVista {
 	@Override
 	public void mostrarTurno(IJugador jugadorActual) {
 		this.vPrincipal.activarDado(jugadorActual.getFicha()==controlador.getJugador().getFicha());
+		this.vPrincipal.activarDado(controlador.getJugador());		
+		this.vPrincipal.mostrarTurno(jugadorActual);		
 	}
-
+	
 	@Override
 	public void mostrarDescripcionCasilla(String descripcionCasilla) {
-		this.vPrincipal.imprimirDescripcion(descripcionCasilla);		
-	}
-
-	
-	
-	@Override
-	public void mostrarDado(String valorDado) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mostrarGanador(IJugador jugadorActual) {
-		// TODO Auto-generated method stub
-		
+		imprimirTexto(descripcionCasilla);		
 	}
 
 }
