@@ -62,20 +62,10 @@ public class VentanaPrincipalGrafica extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 894, 521);
 				
-//		boardLabel = new JLabel();
 		boardLabel = new TableroGrafica();
 		boardLabel.setBounds(32, 33, 600, 420);
 		boardLabel.setBorder(new EmptyBorder(0, 0, 0, 0));
-//		ImageIcon tablero1 = new ImageIcon(tablero.getScaledInstance(boardLabel.getWidth(),boardLabel.getHeight(),Image.SCALE_REPLICATE));
-//		boardLabel.setIcon(tablero1);
 		backgroundPanel.add(boardLabel);
-
-		
-
-
-//		listUsuarios = new JList();
-//		listUsuarios.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-//		scrollPane.setViewportView(listUsuarios);
 				
 		playerList = new JList();
 		playerList.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), "Jugadores", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
@@ -88,20 +78,21 @@ public class VentanaPrincipalGrafica extends JFrame {
 		botonDados = new JButton(dadoIcon);
 		botonDados.setIcon(dadoIcon);
     	botonDados.setBackground(new Color(204, 153, 0));
-    	botonDados.setBounds(688, 334, 133, 109);
+    	botonDados.setBounds(691, 334, 133, 109);
     	botonDados.setEnabled(false);
     	backgroundPanel.add(botonDados);
     	
 		setContentPane(backgroundPanel);
 		
 		textPane = new JTextPane();
+		textPane.setContentType("text/html");
 		textPane.setEditable(false);
 		textPane.setBounds(671, 164, 173, 118);
 		backgroundPanel.add(textPane);
 		
 		labelTurno = new JLabel("Turno de: ");
 		labelTurno.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 12));
-		labelTurno.setBounds(671, 305, 171, 14);
+		labelTurno.setBounds(671, 305, 171, 18);
 		backgroundPanel.add(labelTurno);
 
 	}
@@ -125,7 +116,7 @@ public class VentanaPrincipalGrafica extends JFrame {
 			@Override
 			public Object getElementAt(int arg0) {
 				IJugador jugador = usuarios.get(arg0);
-				if(jugador.getFicha()==jugadorControlador.getFicha()) {					
+				if(jugadorControlador != null && jugador.getFicha()==jugadorControlador.getFicha()) {					
 					return "<html><font color='"+jugador.getFicha().HTMLColor+"'>"+jugador.getNombre()+" (tú)</font></html>";
 				}
 				return "<html><font color='"+jugador.getFicha().HTMLColor+"'>"+jugador.getNombre()+"</font></html>";

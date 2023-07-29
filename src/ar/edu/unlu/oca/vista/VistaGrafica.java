@@ -86,30 +86,31 @@ public class VistaGrafica implements IVista {
 		this.vInicioSesion.setVisible(false);
 		this.vPrincipal.setVisible(true);
 	}
-		
-	private void mostrarInicioSesion() {
-		this.vInicioSesion.setVisible(true);
-		this.vPrincipal.setVisible(false);
-	}
-	
-	public void imprimirTexto(String texto) {
+			
+	private void imprimirTexto(String texto) {
 		this.vPrincipal.imprimirDescripcion(texto);
 	}
+			
+	
+	
+	
 	
 	@Override
-	public void mostrarJugadores(ArrayList<IJugador> usuarios) {
-		this.vPrincipal.actualizarListaUsuarios(usuarios, controlador.getJugador());
-	}
-		
-	@Override
 	public void iniciar() {
-		this.mostrarInicioSesion();
+		this.vInicioSesion.setVisible(true);
+		this.vPrincipal.setVisible(false);
 	}
 	
 	@Override
 	public void setControlador(Controlador controlador) {
 		this.controlador = controlador;
 		this.controlador.agregarVista(this);
+	}
+
+	@Override
+	public void verHistorico() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
@@ -120,6 +121,15 @@ public class VistaGrafica implements IVista {
 	@Override
 	public void mostrarFichas(EnumSet<Ficha> fichasDisponibles) {
 		this.vInicioSesion.mostrarFichas(fichasDisponibles);
+	}
+
+	@Override
+	public void mostrarJugadores(ArrayList<IJugador> usuarios) {
+		for (IJugador iJugador : usuarios) {			
+			System.out.println(iJugador.getNombre());
+		}
+		System.out.println(controlador.getJugador());
+		this.vPrincipal.actualizarListaUsuarios(usuarios, controlador.getJugador());
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package ar.edu.unlu.oca.vista;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.EnumSet;
 
@@ -13,13 +14,13 @@ public interface IVista {
 	void setControlador(Controlador controlador);
 	
 	// Configuracion nueva partida
+	void verHistorico();
 	void mostrarJugadores(ArrayList<IJugador> jugadores);
 	void mostrarFichas(EnumSet<Ficha> fichasDisponibles);
 	void mostrarTurno(IJugador jugadorActual);
 	void mostrarDescripcionCasilla(String descripcionCasilla);
-	void actualizarTablero(Tablero tablero);
+	void actualizarTablero(Tablero tablero) throws RemoteException;
 	void terminarJuego(IJugador iJugador);
-//	void mostrarDados(IJugador jugadorActual);
  
 }
 

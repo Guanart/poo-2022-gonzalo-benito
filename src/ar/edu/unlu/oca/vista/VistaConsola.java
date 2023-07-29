@@ -4,16 +4,20 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.EnumSet;
 
 import javax.swing.JFrame;
 
 import ar.edu.unlu.oca.controlador.Controlador;
+import ar.edu.unlu.oca.controlador.Eventos;
 import ar.edu.unlu.oca.gui.VentanaPrincipalConsola;
 import ar.edu.unlu.oca.modelo.Ficha;
 import ar.edu.unlu.oca.modelo.IJugador;
 import ar.edu.unlu.oca.modelo.Tablero;
+import ar.edu.unlu.oca.modelo.casillas.Casilla;
+
 
 public class VistaConsola extends JFrame implements IVista {
 
@@ -23,11 +27,12 @@ public class VistaConsola extends JFrame implements IVista {
 	private static final long serialVersionUID = 1L;
 	private VentanaPrincipalConsola vPrincipal;
 	private Controlador controlador;
-	private Enum<?> estadoActual = OpcionesMenuPrincipal.INICIO;
+	private Enum<?> estadoActual;;
 	// Durante la carga de jugadores, utilizo:
-	private String nombreJugadorActual = "-1";	
-	private int nroJugadores = -1;
-	private String fichaJugadorActual;
+	private EnumSet<Ficha> fichasDisponibles;
+	private int ficha;
+	private String nombreJugador;
+	
 
 	public VistaConsola(Controlador controlador) {
 		super();
@@ -45,19 +50,21 @@ public class VistaConsola extends JFrame implements IVista {
 		this.vPrincipal.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent arg0) {
-				controlador.salir();
+				if (controlador.getJugador() != null) {					
+					controlador.salir();
+				}
 				System.exit(0);
 			}
 		});
-
 	}
 
-	public void clickHandler(String input) {
-
+	private void clickHandler(String input) {
 		if (estadoActual == OpcionesMenuPrincipal.INICIO) {
 			switch (input) {
 			case "1":
-				nuevaPartida();
+				nombreJugador = "";
+				ficha = ((Ficha) fichasDisponibles.toArray()[0]).opcion;
+				menuEntrarPartida();
 				break;
 			case "2":
 				verHistorico();
@@ -68,17 +75,19 @@ public class VistaConsola extends JFrame implements IVista {
 			default:
 				println("Opción no válida");
 			}
-		} else if (estadoActual == OpcionesMenuPrincipal.NUEVA_PARTIDA) {
+		} else if (estadoActual == OpcionesMenuEntrarPartida.INICIO) {
 			switch (input) {
 			case "1":
-				iniciarPartida();
+				entrarPartida();
 				break;
 			case "2":
-				cargarJugadores();
+				println("Ingrese su nombre: ");
+				estadoActual = OpcionesMenuEntrarPartida.CARGAR_NOMBRE;
 				break;
 			case "3":
-				controlador.mostrarJugadores();
-				nuevaPartida();
+				estadoActual = OpcionesMenuEntrarPartida.SELECCIONAR_FICHA;
+				controlador.fichasDisponibles();
+				println("Ingrese su ficha: ");
 				break;
 			case "4":
 				menuPrincipal();
@@ -86,53 +95,73 @@ public class VistaConsola extends JFrame implements IVista {
 			default:
 				println("Opción no válida");
 			}
-
-		} else if (estadoActual == OpcionesMenuNuevaPartida.CARGAR_JUGADORES) {
-			
-			if (nroJugadores == -1) {
-				if (validarCantJugadores(Integer.parseInt(input))) {					
-					println("Cantidad de jugadores inválida");
-					return;
+		} else if (estadoActual == OpcionesMenuEntrarPartida.CARGAR_NOMBRE) {
+			this.nombreJugador = input;
+			estadoActual = OpcionesMenuEntrarPartida.INICIO;
+			menuEntrarPartida();
+		} else if (estadoActual == OpcionesMenuEntrarPartida.SELECCIONAR_FICHA) {
+			try {
+				this.ficha = Integer.parseInt(input);
+				if (ficha>=1 && ficha <=4) {					
+					estadoActual = OpcionesMenuEntrarPartida.INICIO;
+					menuEntrarPartida();
 				}
-				nroJugadores = Integer.parseInt(input);
+			} catch (Exception e) {
+				println("Ingrese una opción válida");
 			}
-					
-			if (nombreJugadorActual == "-1") { // primer jugador
-				println("\nNombre jugador: ");
-				nombreJugadorActual = null;
-			} else {
-				cargarJugador(input);
-			}
-			
-			if (nroJugadores == 0) {
-				nroJugadores = -1;
-				nombreJugadorActual = "-1";
-				estadoActual = OpcionesMenuPrincipal.NUEVA_PARTIDA;
-				nuevaPartida();
-				return;
-			}
-		} else if (estadoActual == OpcionesMenuNuevaPartida.INICIAR) {
+		} else if (estadoActual == OpcionesPartidaEnCurso.ESPERA) {
+//			controlador.jugarTurno();
+		} else if (estadoActual == OpcionesPartidaEnCurso.JUEGA) {
 			controlador.jugarTurno();
 		}
 	}
 
-	public void println(String texto) {
-		vPrincipal.setTextoHistorico(texto + "\n");
+	private void println(String texto) {
+		vPrincipal.setTextoHistorico("<p>"+texto+"</p>");
 	}
 	
-	public void print(String texto) {
+	private void print(String texto) {
 		vPrincipal.setTextoHistorico(texto);
 	}
 
-	public void println() {
+	private void println() {
 		println("");
 	}
-
-	@Override
-	public void setControlador(Controlador controlador) {
-		this.controlador = controlador;
-		controlador.agregarVista(this);
+	
+	private void menuPrincipal() {
+		estadoActual = OpcionesMenuPrincipal.INICIO;
+		println("------------------------------------------------");
+        for (OpcionesMenuPrincipal e : OpcionesMenuPrincipal.values()) {
+            println(e.label);
+        }
 	}
+
+	private void menuEntrarPartida() {
+		estadoActual = OpcionesMenuEntrarPartida.INICIO;
+		println("------------------------------------------------");
+        for (OpcionesMenuEntrarPartida e : OpcionesMenuEntrarPartida.values()) {
+        	if (e==OpcionesMenuEntrarPartida.CARGAR_NOMBRE) {
+        		println(e.label+" ("+this.nombreJugador+")");
+        	} else if (e==OpcionesMenuEntrarPartida.SELECCIONAR_FICHA) {
+        		println(e.label+" ("+Ficha.values()[this.ficha-1]+")");
+        	} else {        		
+        		println(e.label);
+        	}
+        }
+	}
+	
+
+	private void entrarPartida() {
+		if (!nombreJugador.isBlank() && (0<ficha || ficha<5)) {		
+			println("------------------------------------------------");
+			print("Has ingresado a la partida!");
+			controlador.cargarJugador(nombreJugador, ficha);
+			estadoActual = OpcionesPartidaEnCurso.ESPERA;
+		} else {
+			println("Datos inválidos");
+		}
+	}
+	
 
 	@Override
 	public void iniciar() {
@@ -140,110 +169,14 @@ public class VistaConsola extends JFrame implements IVista {
 		menuPrincipal();
 	}
 
-	private void menuPrincipal() {
-		estadoActual = OpcionesMenuPrincipal.INICIO;
-		println("------------------------------------------------");
-        for (OpcionesMenuPrincipal e : OpcionesMenuPrincipal.values()) {
-            println(e.label);
-        }
-        println();
-	}
-	
-	private void verHistorico() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void nuevaPartida() {
-		println("------------------------------------------------");
-		estadoActual = OpcionesMenuPrincipal.NUEVA_PARTIDA;
-        for (OpcionesMenuNuevaPartida e : OpcionesMenuNuevaPartida.values()) {
-            println(e.label);
-        }
-        println();
-	}
-	
-	public void mostrarFichas(EnumSet<Ficha> fichasDisponibles) {
-		for (Ficha ficha : fichasDisponibles) {
-            println(ficha.opcion+") "+ficha.label);
-		}
-        println();
+	@Override
+	public void setControlador(Controlador controlador) {
+		this.controlador = controlador;
+		controlador.agregarVista(this);
 	}
 	
 	@Override
-	public void mostrarJugadores(ArrayList<IJugador> jugadores) {
-		println("------------------------------------------------");
-		println("[*] LISTA DE JUGADORES\n");
-		for (IJugador jugador : jugadores) {
-			println("Nombre: "+jugador.getNombre());
-			println("Ficha: "+jugador.getFicha());
-			println();
-		}
-	}
-
-	private void cargarJugadores() {
-		estadoActual = OpcionesMenuNuevaPartida.CARGAR_JUGADORES;
-		println("Ingrese cantidad de jugadores [2,4]: ");	
-	}
-	
-	private boolean validarCantJugadores(int cantidad) {
-		return cantidad < 2 || cantidad > 4;
-	}
-
-	@Override
-	public void cargarJugador(String input) {
-		if (nombreJugadorActual == null) {
-			nombreJugadorActual = input;
-			println("Elija una ficha:");
-			controlador.fichasDisponibles();
-		} else {
-			fichaJugadorActual = input;
-			controlador.cargarJugador(nombreJugadorActual, Integer.parseInt(fichaJugadorActual));
-			nombreJugadorActual = null;
-			--nroJugadores;
-			if (nroJugadores > 0) {
-				println("\nNombre jugador: ");
-			}
-		}			
-	}
-	
-	
-	/*
-	 * PARTIDA
-	 */
-	
-	@Override
-	public void mostrarTurno(IJugador jugadorActual) {
-		println("------------------------------------------------");
-		println("Es el turno del jugador: "+jugadorActual.getNombre());
-		println("1) Tirar dados y avanzar");
-	}
-
-	@Override
-	public void mostrarCasilla(String descripcionCasilla) {
-		println("Avanza a la "+descripcionCasilla);
-		println();
-	}
-	
-	@Override
-	public void mostrarDado(String valorDado) {
-		println("Valor dados: "+valorDado);
-	}
-
-	@Override
-	public void mostrarGanador(IJugador jugador) {
-		estadoActual = OpcionesMenuPrincipal.NUEVA_PARTIDA;
-		println("EL JUGADOR: "+jugador.getNombre()+" HA GANADO");		
-	}
-
-	@Override
-	public void mostrarDescripcionCasilla(String descripcionCasilla) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void actualizarTablero(Tablero tablero) {
+	public void verHistorico() {
 		// TODO Auto-generated method stub
 		
 	}
@@ -253,6 +186,89 @@ public class VistaConsola extends JFrame implements IVista {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	@Override
+	public void mostrarFichas(EnumSet<Ficha> fichasDisponibles) {
+		this.fichasDisponibles = fichasDisponibles;
+		if (this.estadoActual==OpcionesMenuEntrarPartida.SELECCIONAR_FICHA) {			
+			println("------------------------------------------------");
+			println("[*] FICHAS DISPONIBLES");
+			for (Ficha ficha : fichasDisponibles) {
+				println(ficha.opcion+") "+ficha.label);
+			}
+			println();
+		}
+	}
+	
+	@Override
+	public void mostrarJugadores(ArrayList<IJugador> jugadores) {
+		print("------------------------------------------------");
+		print("[*] LISTA DE JUGADORES");
+		for (IJugador jugador : jugadores) {
+			if(controlador.getJugador() != null && jugador.getFicha()==controlador.getJugador().getFicha()) {					
+				print("<font color="+jugador.getFicha().HTMLColor+">"+jugador.getNombre()+" ("+jugador.getFicha()+") (tú)</font>");
+			} else {				
+				print("<font color="+jugador.getFicha().HTMLColor+">"+jugador.getNombre()+" ("+jugador.getFicha()+")</font>");
+			}
+		}
+	}
+		
+	@Override
+	public void actualizarTablero(Tablero tablero) throws RemoteException {
+		String str = "";
+		for (int i=Tablero.CASILLA_INICIAL; i<=Tablero.CASILLA_FINAL; ++i) {	
+            str += "| ";
+            ArrayList<IJugador> jugadores = tablero.getCasilla(i).getJugadores();
+            if (!jugadores.isEmpty()) {
+            	for (IJugador jugador : jugadores) {		
+            		str += "<font color="+jugador.getFicha().HTMLColor+">"+jugador.getFicha()+" </font>";
+				}
+            	str += "\t";
+            } else {            	
+            	if (Tablero.CASILLAS_DADO.contains(i)) {
+            		str += "DADO" + "\t";
+            	} else if (Tablero.CASILLAS_OCA.contains(i)) {
+            		str += "OCA" + "\t";
+            	} else if (Tablero.CASILLAS_PUENTE.contains(i)) {
+            		str += "PUENTE" + "\t";
+            	} else if (Tablero.CASILLA_POSADA==i) {
+            		str += "POSADA" + "\t";
+            	} else if (Tablero.CASILLA_POZO==i) {
+            		str += "POZO" + "\t";
+            	} else if (Tablero.CASILLA_LABERINTO==i) {
+            		str += "LABERINTO" + "\t";
+            	} else if (Tablero.CASILLA_CARCEL==i) {
+            		str += "CARCEL" + "\t";
+            	} else if (Tablero.CASILLA_CALAVERA==i) {
+            		str += "CALAVERA" + "\t";
+            	} else if (Tablero.CASILLA_FINAL==i) {
+            		str += "FIN" + "\t";
+            	} else {
+            		str += "Casilla " + i + "\t";
+            	}
+            }
 
+            if (i % 10 == 0) {
+                str += "|<br>";
+            }
+		}
+		println(str);		
+	}
+	
+	@Override
+	public void mostrarTurno(IJugador jugadorActual) {
+		if (jugadorActual.getFicha()==controlador.getJugador().getFicha()) {			
+			print("------------------------------------------------");
+			println("1) Tirar dados y avanzar");
+			estadoActual = OpcionesPartidaEnCurso.JUEGA;
+		} else {
+			estadoActual = OpcionesPartidaEnCurso.ESPERA;
+		}
+	}
+
+	@Override
+	public void mostrarDescripcionCasilla(String descripcionCasilla) {
+		println(descripcionCasilla);
+	}
 
 }

@@ -15,23 +15,23 @@ import ar.edu.unlu.oca.modelo.casillas.CasillaTransportar;
 
 public class Tablero implements Serializable {
 	private static final long serialVersionUID = -4802809576529065351L;
-	final static int CASILLA_INICIAL = 1;
-    final static int CASILLA_FINAL = 63;
-    final static int CASILLA_POSADA = 19;
+	public final static int CASILLA_INICIAL = 1;
+	public final static int CASILLA_FINAL = 63;
+	public final static int CASILLA_POSADA = 19;
     // No podrás volver a tirar el dado hasta que otro jugador pase por esa casilla
-    final static int CASILLA_POZO = 31;
+	public final static int CASILLA_POZO = 31;
     // Retrocede hasta la casilla 30
-    final static int CASILLA_LABERINTO = 42;
+	public final static int CASILLA_LABERINTO = 42;
     // Pierde dos turnos
-    final static int CASILLA_CARCEL = 56;
+	public final static int CASILLA_CARCEL = 56;
     // Regresa a la casilla 1
-    final static int CASILLA_CALAVERA = 58;
+	public final static int CASILLA_CALAVERA = 58;
     // Sumar el número de la casilla y el número de la tirada y avanzar la cantidad resultante
-    private final ArrayList<Integer> CASILLAS_DADO = new ArrayList<Integer>(Arrays.asList(26, 53));
+	public final static ArrayList<Integer> CASILLAS_DADO = new ArrayList<Integer>(Arrays.asList(26, 53));
     // Avanza a la siguiente casilla OCA
-    private final ArrayList<Integer> CASILLAS_OCA = new ArrayList<Integer>(Arrays.asList(5, 9, 14, 18, 23, 27, 32, 36, 41, 45, 50, 54, 59));
+	public final static ArrayList<Integer> CASILLAS_OCA = new ArrayList<Integer>(Arrays.asList(5, 9, 14, 18, 23, 27, 32, 36, 41, 45, 50, 54, 59));
     // Avanza a casilla posada y pierde un turno
-    private final ArrayList<Integer> CASILLAS_PUENTE = new ArrayList<Integer>(Arrays.asList(6, 12));
+	public final static ArrayList<Integer> CASILLAS_PUENTE = new ArrayList<Integer>(Arrays.asList(6, 12));
     
 	private ArrayList<Casilla> casillas = new ArrayList<Casilla>();
 	

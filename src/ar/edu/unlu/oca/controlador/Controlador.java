@@ -88,16 +88,6 @@ public class Controlador implements IControladorRemoto, Serializable {
 	}
 	
 
-	/*
-	 * ###########################
-	 * ACTUALIZACIONES DE LA VISTA
-	 * ###########################
-	 */
-
-	
-	// TODO: podría hacer una función que reciba como parámetros los distintos métodos a ejecutar?
-	// Así me ahorro los bucles for, y los try/catch
-
 	private void terminarJuego() {
 		try {
 			for (IVista vista : vistas)
@@ -109,25 +99,6 @@ public class Controlador implements IControladorRemoto, Serializable {
 
 	}
 
-//	private void mostrarGanador() {
-//		try {
-//			for (IVista vista : vistas)
-//				vista.mostrarGanador(modelo.getJugadorActual());
-//		} catch (RemoteException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}		
-//	}
-
-//	private void mostrarDados() {
-//		try {
-//			for (IVista vista : vistas)
-//				vista.mostrarDado(modelo.mostrarDado());
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}				
-//	}
 
 	private void mostrarDescripcionCasilla() {
 		try {
@@ -139,16 +110,7 @@ public class Controlador implements IControladorRemoto, Serializable {
 		}		
 		
 	}
-	
-//	private void mostrarDados() {
-//		try {
-//			for (IVista vista : vistas)
-//				vista.mostrarDados(modelo.getJugadorActual());
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}				
-//	}
+
 
 	private void mostrarTurno() {
 		try {
@@ -183,12 +145,6 @@ public class Controlador implements IControladorRemoto, Serializable {
 		}
 	}
 
-
-	/*
-	 * ###########################
-	 * LLAMADAS AL MODELO
-	 * ###########################
-	 */
 	
 	public void iniciarPartida() {
 		try {
@@ -212,10 +168,8 @@ public class Controlador implements IControladorRemoto, Serializable {
 		try {
 			// Al agregar el último jugador, no da tiempo al ultimo controlador de asignar this.jugador, porque comienza la partida (luego lo termina asignando)
 			this.jugador = modelo.cargarJugador(nombre, color);
-			for (IVista vista : vistas) {
-				modelo.iniciarJuego(); // Arranca si completo el cupo de jugadores
-				vista.mostrarJugadores(modelo.getJugadores());
-			}
+			mostrarJugadores();
+			modelo.iniciarJuego(); // Arranca si completo el cupo de jugadores
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

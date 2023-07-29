@@ -130,7 +130,7 @@ public class Jugador implements IJugador, Serializable {
 
 	@Override
 	public String getNombre() {
-		return nombre;
+		return "<font color="+ficha.HTMLColor+">"+nombre+"</font>";
 	}
 
 	@Override

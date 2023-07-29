@@ -31,7 +31,9 @@ public class Juego extends ObservableRemoto implements IJuego, Serializable {
 	public void iniciarJuego() throws RemoteException {
 		if (jugadores.size()==cantJugadores) {
 			tablero.inicializar(jugadores);
-			descripcionUltimaCasilla = "La partida ha comenzado! Comienza el jugador "+jugadores.peek().getNombre();
+			Jugador jugador = jugadores.peek();
+			descripcionUltimaCasilla = "<font color="+jugador.getFicha().HTMLColor+">La partida ha comenzado! Comienza el jugador "+jugador.getNombre()+" ("+jugador.getFicha()+")</font>";
+//			descripcionUltimaCasilla = "La partida ha comenzado! Comienza el jugador "+jugadores.peek().getNombre();
 			notificarObservadores(Eventos.COMENZAR_PARTIDA);
 			System.out.println(descripcionUltimaCasilla);
 			System.out.println("------------------------------------");
@@ -111,7 +113,8 @@ public class Juego extends ObservableRemoto implements IJuego, Serializable {
 		System.out.println("------------------------------------");
 
 		if (jugador.gano(tablero)) {
-			descripcionUltimaCasilla += "\nEl jugador "+jugador.getNombre()+" ha ganado!";
+			descripcionUltimaCasilla = "<font color="+jugador.getFicha().HTMLColor+">El jugador "+jugador.getNombre()+" ("+jugador.getFicha()+") ha ganado!</font>";
+//			descripcionUltimaCasilla += "\nEl jugador "+jugador.getNombre()+" ha ganado!";
 			notificarObservadores(Eventos.FIN_JUEGO);
 			terminarJuego();
 			return jugador;

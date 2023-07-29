@@ -1,16 +1,23 @@
 package ar.edu.unlu.oca.gui;
 
+import java.awt.Color;
+import javax.swing.text.html.HTMLEditorKit;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.StringReader;
 import java.time.format.DateTimeFormatter;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultCaret;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
@@ -25,6 +32,7 @@ import javax.swing.JTextPane;
 import javax.swing.JTextField;
 import javax.swing.AbstractListModel;
 import javax.swing.JButton;
+import javax.swing.JEditorPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 
@@ -34,8 +42,8 @@ public class VentanaPrincipalConsola extends JFrame {
 	private JPanel contentPane;
 	private JTextField textInput;
 	private JButton btnEnviar;
-//	private JTextPane txtHistorico;  TODO
-	private JTextArea txtHistorico;
+	private JEditorPane txtHistorico;
+//	private JTextPane txtHistorico;
 	
 	/**
 	 * Launch the application.
@@ -55,6 +63,7 @@ public class VentanaPrincipalConsola extends JFrame {
 	
 	/**
 	 * Create the frame.
+	 * @throws BadLocationException 
 	 */
 	public VentanaPrincipalConsola() {
 		setLocationRelativeTo(null);
@@ -67,8 +76,17 @@ public class VentanaPrincipalConsola extends JFrame {
 		JScrollPane scrollPane_1 = new JScrollPane();
 		contentPane.add(scrollPane_1, "cell 0 0 3 1,grow");
 		
-//		txtHistorico = new JTextPane(); TODO
-		txtHistorico = new JTextArea();
+		txtHistorico = new JEditorPane();
+		txtHistorico.setContentType("text/html");
+		txtHistorico.setText("");
+//		txtHistorico.setBackground(Color.orange);
+//		StyledDocument styledDoc = txtHistorico.getStyledDocument();
+//		Style style = txtHistorico.addStyle("", null);
+//		StyleConstants.setForeground(style, Color.RED);
+//		StyleConstants.setBackground(style, Color.BLUE);
+//		styledDoc.insertString(styledDoc.getLength(), "Game of Thrones ", style);
+
+		
 		txtHistorico.setEditable(false);
 		scrollPane_1.setViewportView(txtHistorico);
 		DefaultCaret caret = (DefaultCaret) txtHistorico.getCaret();
@@ -105,9 +123,21 @@ public class VentanaPrincipalConsola extends JFrame {
 	}
 	
 	public void setTextoHistorico(String texto) {
-		this.txtHistorico.append(texto);
+//		String aux = this.txtHistorico.getText() + "<html><body>"+texto+"</body></html>";
+//		System.out.println(aux);
+//		this.txtHistorico.setText(aux);
+		appendHTML(txtHistorico, texto);
 	}
 	
+    private static void appendHTML(JEditorPane editorPane, String html) {
+        HTMLEditorKit kit = (HTMLEditorKit) editorPane.getEditorKit();
+        try {
+            StringReader reader = new StringReader(html);
+            kit.read(reader, editorPane.getDocument(), editorPane.getDocument().getLength());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 	
 }
