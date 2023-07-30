@@ -7,6 +7,7 @@ import java.awt.event.WindowEvent;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.Map;
 
 import javax.swing.JFrame;
 
@@ -71,7 +72,7 @@ public class VistaConsola extends JFrame implements IVista {
 				}
 				break;
 			case "2":
-				verHistorico();
+				verRanking();
 				break;
 			case "3":
 				if (controlador.getJugador() != null) {					
@@ -206,9 +207,16 @@ public class VistaConsola extends JFrame implements IVista {
 	}
 	
 	@Override
-	public void verHistorico() {
-		// TODO Auto-generated method stub
-		
+	public void verRanking() {
+		Map<String, Integer> ranking = controlador.getRanking();
+		println("------------------------------------------------");
+		print("[*] RANKING HISTÓRICO DE GANADORES");
+		print("<pre>"+"Jugador"+"\t\t"+"Partidas Ganadas"+"</pre>");
+		for (Map.Entry<String, Integer> entry : ranking.entrySet()) {
+            String clave = entry.getKey();
+            int valor = entry.getValue();
+            print("<pre>"+clave+"\t"+"\t"+Integer.toString(valor)+"</pre>");
+		}
 	}
 
 	@Override

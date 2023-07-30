@@ -108,7 +108,7 @@ public class VistaGrafica implements IVista {
 	}
 
 	@Override
-	public void verHistorico() {
+	public void verRanking() {
 		// TODO Auto-generated method stub
 		
 	}

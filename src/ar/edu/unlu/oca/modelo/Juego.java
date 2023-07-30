@@ -181,4 +181,9 @@ public class Juego extends ObservableRemoto implements IJuego, Serializable {
 		return tablero;
 	}
 
+	@Override
+	public Map<String, Integer> getRanking() throws RemoteException {
+		return ranking;
+	}
+
 }

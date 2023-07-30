@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.Map;
 
 import ar.edu.unlu.oca.modelo.Ficha;
 import ar.edu.unlu.oca.modelo.IJuego;
@@ -221,6 +222,17 @@ public class Controlador implements IControladorRemoto, Serializable {
 			e.printStackTrace();
 		}
 		return esPartidaComenzada;
+	}
+
+	public Map<String, Integer> getRanking() {
+		Map<String, Integer> ranking = null;
+		try {
+			ranking = modelo.getRanking();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return ranking;
 	}
 
 }

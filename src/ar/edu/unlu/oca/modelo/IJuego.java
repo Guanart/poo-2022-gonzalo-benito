@@ -3,6 +3,7 @@ package ar.edu.unlu.oca.modelo;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.Map;
 
 import ar.edu.unlu.rmimvc.observer.IObservableRemoto;
 
@@ -20,4 +21,5 @@ public interface IJuego extends IObservableRemoto {
 	void salir(IJugador jugador) throws RemoteException;
 	boolean esPartidaComenzada() throws RemoteException;
 	IJugador entrarPartidaGuardada(String nombre) throws RemoteException;
+	Map<String, Integer> getRanking() throws RemoteException;
 }

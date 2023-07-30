@@ -14,7 +14,7 @@ public interface IVista {
 	void setControlador(Controlador controlador);
 	
 	// Configuracion nueva partida
-	void verHistorico();
+	void verRanking();
 	void mostrarJugadores(ArrayList<IJugador> jugadores);
 	void mostrarFichas(EnumSet<Ficha> fichasDisponibles);
 	void mostrarTurno(IJugador jugadorActual);
