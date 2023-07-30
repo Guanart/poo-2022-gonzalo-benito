@@ -28,11 +28,11 @@ public class Jugador implements IJugador, Serializable {
 	public Eventos jugar(Tablero tablero, Dado dado) {
 		if (turnosPerdidos > 0) {
 			turnosPerdidos--;
-			descripcionCasillaActual = "El jugador "+nombre+" ("+ficha+") pierde un turno.\nTurnos perdidos restantes: "+turnosPerdidos;
+			descripcionCasillaActual = "El <font color="+getFicha().HTMLColor+">jugador "+nombre+" ("+ficha+")</font> pierde un turno.\nTurnos perdidos restantes: "+turnosPerdidos;
 			return Eventos.TURNO_TERMINADO;
 		}
 		else if (estaEnPozo) {
-			descripcionCasillaActual = "El jugador "+nombre+" ("+ficha+") se encuentra en el pozo y no puede moverse hasta ser liberado";
+			descripcionCasillaActual = "El <font color="+getFicha().HTMLColor+">jugador "+nombre+" ("+ficha+")</font> se encuentra en el pozo y no puede moverse hasta ser liberado";
 			return Eventos.TURNO_TERMINADO;
 		}
 
@@ -79,7 +79,9 @@ public class Jugador implements IJugador, Serializable {
 		casillaAnterior.eliminarJugador(this);
 		String descNuevaCasilla = casilla.agregarJugador(tablero, this, movidaEspecial);
 		if (!movidaEspecial) {
-			this.descripcionCasillaActual = "El jugador "+nombre+" ("+ficha+") lanzó "+cantCasillas+" y avanza a la "+descNuevaCasilla;
+//			this.descripcionCasillaActual = "El jugador "+nombre+" ("+ficha+") lanzó "+cantCasillas+" y avanza a la "+descNuevaCasilla;
+			this.descripcionCasillaActual = "El <font color="+getFicha().HTMLColor+">jugador "+nombre+" ("+ficha+")</font> lanzó "+cantCasillas+" y avanza a la "+descNuevaCasilla;
+
 		}
 		descripcionCasillaActual += jugadoresLiberados;
 	}
@@ -130,7 +132,8 @@ public class Jugador implements IJugador, Serializable {
 
 	@Override
 	public String getNombre() {
-		return "<font color="+ficha.HTMLColor+">"+nombre+"</font>";
+//		return "<font color="+ficha.HTMLColor+">"+nombre+"</font>";
+		return nombre;
 	}
 
 	@Override

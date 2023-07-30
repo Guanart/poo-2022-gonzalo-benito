@@ -63,14 +63,21 @@ public class VistaConsola extends JFrame implements IVista {
 			switch (input) {
 			case "1":
 				nombreJugador = "";
-				ficha = ((Ficha) fichasDisponibles.toArray()[0]).opcion;
-				menuEntrarPartida();
+				ficha = ((Ficha) fichasDisponibles.toArray()[0]).opcion;	// Setea la ficha por defecto la primera ficha disponible
+				if (controlador.esPartidaComenzada()) {
+					menuEntrarPartidaComenzada();
+				} else {					
+					menuEntrarNuevaPartida();
+				}
 				break;
 			case "2":
 				verHistorico();
 				break;
 			case "3":
-				controlador.salir();
+				if (controlador.getJugador() != null) {					
+					controlador.salir();
+				}
+				System.exit(0);
 				break;
 			default:
 				println("Opción no válida");
@@ -98,13 +105,17 @@ public class VistaConsola extends JFrame implements IVista {
 		} else if (estadoActual == OpcionesMenuEntrarPartida.CARGAR_NOMBRE) {
 			this.nombreJugador = input;
 			estadoActual = OpcionesMenuEntrarPartida.INICIO;
-			menuEntrarPartida();
+			if (controlador.esPartidaComenzada()) {
+				menuEntrarPartidaComenzada();
+			} else {				
+				menuEntrarNuevaPartida();
+			}
 		} else if (estadoActual == OpcionesMenuEntrarPartida.SELECCIONAR_FICHA) {
 			try {
 				this.ficha = Integer.parseInt(input);
 				if (ficha>=1 && ficha <=4) {					
 					estadoActual = OpcionesMenuEntrarPartida.INICIO;
-					menuEntrarPartida();
+					menuEntrarNuevaPartida();
 				}
 			} catch (Exception e) {
 				println("Ingrese una opción válida");
@@ -136,7 +147,7 @@ public class VistaConsola extends JFrame implements IVista {
         }
 	}
 
-	private void menuEntrarPartida() {
+	private void menuEntrarNuevaPartida() {
 		estadoActual = OpcionesMenuEntrarPartida.INICIO;
 		println("------------------------------------------------");
         for (OpcionesMenuEntrarPartida e : OpcionesMenuEntrarPartida.values()) {
@@ -150,15 +161,34 @@ public class VistaConsola extends JFrame implements IVista {
         }
 	}
 	
+	private void menuEntrarPartidaComenzada() {
+		estadoActual = OpcionesMenuEntrarPartida.INICIO;
+		println("------------------------------------------------");
+        for (OpcionesMenuEntrarPartida e : OpcionesMenuEntrarPartida.values()) {
+        	if (e==OpcionesMenuEntrarPartida.CARGAR_NOMBRE) {
+        		println(e.label+" ("+this.nombreJugador+")");
+        	} else if (e==OpcionesMenuEntrarPartida.SELECCIONAR_FICHA) {
+        		continue;
+        	} else {        		
+        		println(e.label);
+        	}
+        }		
+	}
 
 	private void entrarPartida() {
-		if (!nombreJugador.isBlank() && (0<ficha || ficha<5)) {		
-			println("------------------------------------------------");
-			print("Has ingresado a la partida!");
-			controlador.cargarJugador(nombreJugador, ficha);
-			estadoActual = OpcionesPartidaEnCurso.ESPERA;
-		} else {
-			println("Datos inválidos");
+		if (controlador.esPartidaComenzada()) {
+			if (!nombreJugador.isBlank()) {
+				controlador.entrarPartidaGuardada(nombreJugador);
+			}
+		} else {			
+			if (!nombreJugador.isBlank() && (0<ficha || ficha<5)) {		
+				println("------------------------------------------------");
+				print("Has ingresado a la partida!");
+				controlador.cargarJugador(nombreJugador, ficha);
+				estadoActual = OpcionesPartidaEnCurso.ESPERA;
+			} else {
+				println("Datos inválidos");
+			}
 		}
 	}
 	

@@ -42,7 +42,7 @@ public class Controlador implements IControladorRemoto, Serializable {
 		Eventos evento = (Eventos) args;
 		switch(evento) {
 		case JUGADOR_AGREGADO:
-			mostrarJugadores();
+//			mostrarJugadores();
 			break;
 		case JUGADOR_ELIMINADO:
 			mostrarJugadores();
@@ -53,10 +53,10 @@ public class Controlador implements IControladorRemoto, Serializable {
 			mostrarDescripcionCasilla();
 			mostrarTurno();
 			break;
-//		case LIMITE_JUGADORES:
-//			
-//			break;
-			
+		case JUGADOR_PARTIDA_GUARDADA:
+			actualizarTablero();
+			mostrarDescripcionCasilla();
+			break;
 		case ESTA_EN_POZO:
 			actualizarTablero();
 			mostrarDescripcionCasilla();
@@ -176,6 +176,18 @@ public class Controlador implements IControladorRemoto, Serializable {
 		}		
 	}
 	
+	public void entrarPartidaGuardada(String nombre) {
+		try {
+			// Al agregar el último jugador, no da tiempo al ultimo controlador de asignar this.jugador, porque comienza la partida (luego lo termina asignando)
+			this.jugador = modelo.entrarPartidaGuardada(nombre);
+			mostrarJugadores();
+			mostrarTurno();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+	}
+	
 	public void actualizarTablero() {
 		try {
 			for (IVista vista : vistas) {
@@ -198,6 +210,17 @@ public class Controlador implements IControladorRemoto, Serializable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public boolean esPartidaComenzada() {
+		boolean esPartidaComenzada = false;
+		try {
+			esPartidaComenzada = modelo.esPartidaComenzada();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return esPartidaComenzada;
 	}
 
 }

@@ -18,4 +18,6 @@ public interface IJuego extends IObservableRemoto {
 	String mostrarDado() throws RemoteException;
 	Tablero getTablero() throws RemoteException;
 	void salir(IJugador jugador) throws RemoteException;
+	boolean esPartidaComenzada() throws RemoteException;
+	IJugador entrarPartidaGuardada(String nombre) throws RemoteException;
 }
