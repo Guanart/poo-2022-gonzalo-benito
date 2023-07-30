@@ -48,15 +48,15 @@ public class Controlador implements IControladorRemoto, Serializable {
 		case JUGADOR_ELIMINADO:
 			mostrarJugadores();
 			break;
+		case JUGADOR_PARTIDA_GUARDADA:
+			actualizarTablero();
+			mostrarDescripcionCasilla();
+			break;
 		case COMENZAR_PARTIDA:
 			// TODO: podría configurar algo especial al comienzo de la partida. Ej: orden de jugadores
 			actualizarTablero();
 			mostrarDescripcionCasilla();
 			mostrarTurno();
-			break;
-		case JUGADOR_PARTIDA_GUARDADA:
-			actualizarTablero();
-			mostrarDescripcionCasilla();
 			break;
 		case ESTA_EN_POZO:
 			actualizarTablero();
@@ -83,11 +83,24 @@ public class Controlador implements IControladorRemoto, Serializable {
 			mostrarDescripcionCasilla();
 			terminarJuego();
 			break;
+		case PARTIDA_GUARDADA:
+			partidaGuardada();
+			break;
 		default:
 			break;
 		}		
 	}
 	
+
+	private void partidaGuardada() {
+		try {
+			for (IVista vista : vistas)
+				vista.partidaGuardada();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+	}
 
 	private void terminarJuego() {
 		try {
@@ -97,7 +110,6 @@ public class Controlador implements IControladorRemoto, Serializable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
-
 	}
 
 

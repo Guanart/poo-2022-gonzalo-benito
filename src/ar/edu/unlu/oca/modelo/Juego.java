@@ -46,7 +46,6 @@ public class Juego extends ObservableRemoto implements IJuego, Serializable {
 	public boolean esPartidaComenzada() throws RemoteException {
 		return esPartidaComenzada;
 	}
-
 	
 	// Partida en juego
 	public void iniciarJuego() throws RemoteException {
@@ -62,15 +61,17 @@ public class Juego extends ObservableRemoto implements IJuego, Serializable {
 
 	}
 			
-	private void terminarJuego(Jugador jugador) {
+	private void terminarJuego(Jugador jugador) throws RemoteException {
 		ganador = jugador;
 		System.out.println("Partida terminada");
 
 		if (ranking.containsKey(ganador.getNombre())) {
-			ranking.replace(jugador.getNombre(), ranking.get(jugador.getNombre()+1));	// Si existe el nombre en la tabla, incrementa su score en +1
+			ranking.replace(jugador.getNombre(), ranking.get(jugador.getNombre())+1);	// Si existe el nombre en la tabla, incrementa su score en +1
 		} else {
 			ranking.put(jugador.getNombre(), 1);
 		}
+		notificarObservadores(Eventos.FIN_JUEGO);
+		esPartidaComenzada = false;
 	}	
 	
 	// Configuracion
@@ -104,14 +105,13 @@ public class Juego extends ObservableRemoto implements IJuego, Serializable {
 	
 	@Override
 	public IJugador entrarPartidaGuardada(String nombre) throws RemoteException {
-		Jugador jugadorGuardado = null;
 		for (Jugador jugador : jugadores) {
 			if (jugador.getNombre().equals(nombre)) {
-				jugadorGuardado = jugador;
 				notificarObservadores(Eventos.JUGADOR_PARTIDA_GUARDADA);
+				return jugador;
 			}
 		}
-		return jugadorGuardado;
+		return null;
 	}
 		
 	@Override
@@ -123,16 +123,19 @@ public class Juego extends ObservableRemoto implements IJuego, Serializable {
 			}
 		}
 
-		if (jugadores.isEmpty()) {
-			cerrar();
-		} else {
-			notificarObservadores(Eventos.JUGADOR_ELIMINADO);
-		}
+		notificarObservadores(Eventos.JUGADOR_ELIMINADO);
 	}
 	
+	@Override
+	public void guardarPartida() throws RemoteException {
+		System.out.println("Partida guardada");
+		notificarObservadores(Eventos.PARTIDA_GUARDADA);
+		cerrar();
+	}
+
 	public void cerrar() {
 		System.out.println("Se cerró el servidor");
-//		System.exit(0);
+		System.exit(0);
 	}
 
 
@@ -145,16 +148,15 @@ public class Juego extends ObservableRemoto implements IJuego, Serializable {
 		Jugador jugador = jugadores.peek();
 		System.out.println("Turno de: "+jugador.getNombre());
 		Eventos evento = jugador.jugar(tablero, dado);
-//		String lanzamiento = "Lanzó: "+jugador.getUltimaTirada();
-//		descripcionUltimaCasilla = "El jugador "+jugador.getNombre()+" ("+jugador.getFicha()+") lanzó "+jugador.getUltimaTirada()+" y avanza a la "+jugador.getDescripcionCasillaActual();
 		descripcionUltimaCasilla = jugador.getDescripcionCasillaActual();
-		System.out.println(descripcionUltimaCasilla);
+
+		System.out.println("El jugador "+jugador.getNombre()+" ("+jugador.getFicha()+") lanzó "+jugador.getUltimaTirada());
 		System.out.println(evento);
+		System.out.println();
 		System.out.println("------------------------------------");
 
 		if (jugador.gano(tablero)) {
 			descripcionUltimaCasilla += "<br><font color="+jugador.getFicha().HTMLColor+">El jugador "+jugador.getNombre()+" ("+jugador.getFicha()+") ha ganado!</font></br>";
-			notificarObservadores(Eventos.FIN_JUEGO);
 			terminarJuego(jugador);
 			return jugador;
 		}
@@ -184,6 +186,12 @@ public class Juego extends ObservableRemoto implements IJuego, Serializable {
 	@Override
 	public Map<String, Integer> getRanking() throws RemoteException {
 		return ranking;
+	}
+	
+	@Override
+	public String toString() {
+		return "esPartidaComenzada: "+esPartidaComenzada+"\n"+
+				"Jugador actual: "+jugadores.peek().getNombre()+" ("+jugadores.peek().getFicha()+")\n";
 	}
 
 }

@@ -71,7 +71,7 @@ public class OcaAppServidor {
 		///			LEER ARCHIVO			///
 		///////////////////////////////////////		
 
-        Object guardado = serializador.readFirstObject();
+		Object guardado = serializador.readFirstObject();
         
 		///////////////////////////////////////
 		///			CREAR PARTIDA			///
@@ -87,19 +87,35 @@ public class OcaAppServidor {
 					null,
 					new String[]{"Nueva partida"},
 					"Nueva partida"
-					);
+					);		
 		} else {
-			modelo = (Juego) guardado;			
-			cargarPartida = (String) JOptionPane.showInputDialog(
-					null, 
-					"¿Desea cargar su última partida guardada? ¿O iniciar una nueva partida?", "Cargar partida", 
-					JOptionPane.QUESTION_MESSAGE,
-					null,
-					new String[]{"Nueva partida", "Cargar partida"},
-					"Nueva partida"
-					);
-		}
-							
+				modelo = (Juego) guardado;
+				
+				try {
+					if (modelo.esPartidaComenzada()) {
+						cargarPartida = (String) JOptionPane.showInputDialog(
+								null, 
+								"¿Desea cargar su última partida guardada? ¿O iniciar una nueva partida?", "Cargar partida", 
+								JOptionPane.QUESTION_MESSAGE,
+								null,
+								new String[]{"Nueva partida", "Cargar partida"},
+								"Nueva partida"
+								);
+					} else {
+						cargarPartida = (String) JOptionPane.showInputDialog(
+								null, 
+								"¿Iniciar una nueva partida?", "Iniciar partida", 
+								JOptionPane.QUESTION_MESSAGE,
+								null,
+								new String[]{"Nueva partida"},
+								"Nueva partida"
+								);				
+					}
+				} catch (RemoteException e) {
+				
+				}
+			}
+									
 		if (cargarPartida.equalsIgnoreCase("Nueva partida")) {
 			jugadores = (String) JOptionPane.showInputDialog(
 					null, 
@@ -112,6 +128,11 @@ public class OcaAppServidor {
 			modelo.nuevaPartida(Integer.parseInt(jugadores));
 		}
 		
+		try {			
+			System.out.println(modelo);
+		} catch (Exception e) {
+			
+		}
 		
 		///////////////////////////////////////
 		///			LEVANTAR SERVER			///
@@ -121,10 +142,8 @@ public class OcaAppServidor {
 		try {
 			servidor.iniciar(modelo);
 		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (RMIMVCException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -134,17 +153,20 @@ public class OcaAppServidor {
 		///////////////////////////////////////
 
 		String guardarPartida = "No";
-//		while (true) {			
+		while (true) {			
 			guardarPartida = (String) JOptionPane.showInputDialog(
 					null, 
-					"¿Desea guardar la partida en su estado actual?", "Guardar partida", 
+					"¿Desea salir y guardar la partida en su estado actual?", "Guardar partida", 
 					JOptionPane.QUESTION_MESSAGE,
 					null,
 //					new String[]{"Si", "No"},
 					new String[]{"Si"},
 					"Si"
 					);
-			try {				
+			try {
+				if (guardarPartida == null) {
+					break;
+				}
 				if (guardarPartida.equalsIgnoreCase("Si")) {
 	            	try {	            		
 	            		archivo.delete();
@@ -153,13 +175,14 @@ public class OcaAppServidor {
 	        			e.printStackTrace();
 	            	}
 					serializador.writeOneObject(modelo);
-					System.out.println("Partida guardada");
+					modelo.guardarPartida();
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-
-//			}
+		}
+		
+		
 	}
 
 }

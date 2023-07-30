@@ -22,4 +22,5 @@ public interface IJuego extends IObservableRemoto {
 	boolean esPartidaComenzada() throws RemoteException;
 	IJugador entrarPartidaGuardada(String nombre) throws RemoteException;
 	Map<String, Integer> getRanking() throws RemoteException;
+	void guardarPartida() throws RemoteException;
 }

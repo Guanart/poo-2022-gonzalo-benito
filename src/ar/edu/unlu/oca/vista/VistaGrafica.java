@@ -114,6 +114,12 @@ public class VistaGrafica implements IVista {
 	}
 
 	@Override
+	public void partidaGuardada() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
 	public void terminarJuego(IJugador jugador) {
 		this.vPrincipal.activarDado(false);
 	}
@@ -148,5 +154,5 @@ public class VistaGrafica implements IVista {
 	public void mostrarDescripcionCasilla(String descripcionCasilla) {
 		imprimirTexto(descripcionCasilla);		
 	}
-
+	
 }

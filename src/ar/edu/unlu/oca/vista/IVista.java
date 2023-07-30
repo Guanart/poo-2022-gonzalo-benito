@@ -21,6 +21,7 @@ public interface IVista {
 	void mostrarDescripcionCasilla(String descripcionCasilla);
 	void actualizarTablero(Tablero tablero) throws RemoteException;
 	void terminarJuego(IJugador iJugador);
+	void partidaGuardada();
  
 }
 

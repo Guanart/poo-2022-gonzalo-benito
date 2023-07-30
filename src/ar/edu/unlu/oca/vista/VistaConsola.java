@@ -73,6 +73,7 @@ public class VistaConsola extends JFrame implements IVista {
 				break;
 			case "2":
 				verRanking();
+				menuPrincipal();
 				break;
 			case "3":
 				if (controlador.getJugador() != null) {					
@@ -104,12 +105,16 @@ public class VistaConsola extends JFrame implements IVista {
 				println("Opción no válida");
 			}
 		} else if (estadoActual == OpcionesMenuEntrarPartida.CARGAR_NOMBRE) {
-			this.nombreJugador = input;
-			estadoActual = OpcionesMenuEntrarPartida.INICIO;
-			if (controlador.esPartidaComenzada()) {
-				menuEntrarPartidaComenzada();
-			} else {				
-				menuEntrarNuevaPartida();
+			if (!input.isBlank()) {				
+				this.nombreJugador = input;
+				estadoActual = OpcionesMenuEntrarPartida.INICIO;
+				if (controlador.esPartidaComenzada()) {
+					menuEntrarPartidaComenzada();
+				} else {				
+					menuEntrarNuevaPartida();
+				}
+			} else {
+				println("Ingrese un nombre válido");
 			}
 		} else if (estadoActual == OpcionesMenuEntrarPartida.SELECCIONAR_FICHA) {
 			try {
@@ -210,7 +215,7 @@ public class VistaConsola extends JFrame implements IVista {
 	public void verRanking() {
 		Map<String, Integer> ranking = controlador.getRanking();
 		println("------------------------------------------------");
-		print("[*] RANKING HISTÓRICO DE GANADORES");
+		println("[*] RANKING HISTÓRICO DE GANADORES");
 		print("<pre>"+"Jugador"+"\t\t"+"Partidas Ganadas"+"</pre>");
 		for (Map.Entry<String, Integer> entry : ranking.entrySet()) {
             String clave = entry.getKey();
@@ -218,11 +223,17 @@ public class VistaConsola extends JFrame implements IVista {
             print("<pre>"+clave+"\t"+"\t"+Integer.toString(valor)+"</pre>");
 		}
 	}
-
+	
 	@Override
 	public void terminarJuego(IJugador iJugador) {
-		// TODO Auto-generated method stub
-		
+		estadoActual = OpcionesPartidaEnCurso.ESPERA;
+		verRanking();
+	}
+	
+	@Override
+	public void partidaGuardada() {
+		estadoActual = OpcionesPartidaEnCurso.ESPERA;
+		println("[*] EL SERVIDOR FUE APAGADO, Y LA PARTIDA HA SIDO GUARDADA. POR FAVOR, LEVANTAR EL SERVIDOR Y CONECTARSE NUEVAMENTE.");
 	}
 	
 	@Override
@@ -230,11 +241,10 @@ public class VistaConsola extends JFrame implements IVista {
 		this.fichasDisponibles = fichasDisponibles;
 		if (this.estadoActual==OpcionesMenuEntrarPartida.SELECCIONAR_FICHA) {			
 			println("------------------------------------------------");
-			println("[*] FICHAS DISPONIBLES");
+			print("[*] FICHAS DISPONIBLES");
 			for (Ficha ficha : fichasDisponibles) {
-				println(ficha.opcion+") "+ficha.label);
+				println("<font color="+ficha.HTMLColor+">"+ficha.opcion+") "+ficha.label+"</font>");
 			}
-			println();
 		}
 	}
 	
@@ -261,26 +271,26 @@ public class VistaConsola extends JFrame implements IVista {
             	for (IJugador jugador : jugadores) {		
             		str += "<font color="+jugador.getFicha().HTMLColor+">"+jugador.getFicha()+" </font>";
 				}
-            	str += "\t";
+            	str += "\t\t";
             } else {            	
             	if (Tablero.CASILLAS_DADO.contains(i)) {
-            		str += "DADO" + "\t";
+            		str += "DADO" + "\t\t";
             	} else if (Tablero.CASILLAS_OCA.contains(i)) {
-            		str += "OCA" + "\t";
+            		str += "OCA" + "\t\t";
             	} else if (Tablero.CASILLAS_PUENTE.contains(i)) {
-            		str += "PUENTE" + "\t";
+            		str += "PUENTE" + "\t\t";
             	} else if (Tablero.CASILLA_POSADA==i) {
-            		str += "POSADA" + "\t";
+            		str += "POSADA" + "\t\t";
             	} else if (Tablero.CASILLA_POZO==i) {
-            		str += "POZO" + "\t";
+            		str += "POZO" + "\t\t";
             	} else if (Tablero.CASILLA_LABERINTO==i) {
-            		str += "LABERINTO" + "\t";
+            		str += "LABERINTO" + "\t\t";
             	} else if (Tablero.CASILLA_CARCEL==i) {
-            		str += "CARCEL" + "\t";
+            		str += "CARCEL" + "\t\t";
             	} else if (Tablero.CASILLA_CALAVERA==i) {
-            		str += "CALAVERA" + "\t";
+            		str += "CALAVERA" + "\t\t";
             	} else if (Tablero.CASILLA_FINAL==i) {
-            		str += "FIN" + "\t";
+            		str += "META" + "\t\t";
             	} else {
             		str += "Casilla " + i + "\t";
             	}
@@ -295,9 +305,16 @@ public class VistaConsola extends JFrame implements IVista {
 	
 	@Override
 	public void mostrarTurno(IJugador jugadorActual) {
-		if (jugadorActual.getFicha()==controlador.getJugador().getFicha()) {			
+		IJugador jugadorControlador = controlador.getJugador();
+		if (jugadorActual.getFicha()==jugadorControlador.getFicha()) {
 			print("------------------------------------------------");
-			println("1) Tirar dados y avanzar");
+			println("Es tu turno!");
+			
+			if (jugadorControlador.turnosPerdidos() > 0 || jugadorControlador.estaEnPozo()) {
+				print("1) Pasar turno");
+			} else {				
+				print("1) Tirar dados y avanzar");
+			}
 			estadoActual = OpcionesPartidaEnCurso.JUEGA;
 		} else {
 			estadoActual = OpcionesPartidaEnCurso.ESPERA;
