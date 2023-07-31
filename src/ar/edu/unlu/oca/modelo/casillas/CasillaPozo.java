@@ -19,7 +19,7 @@ public class CasillaPozo extends Casilla {
 		String jugadoresLiberados = "";
 		for (Jugador jugador : jugadores) {
 			if (jugador.liberarDelPozo()) {
-				jugadoresLiberados += "El jugador "+jugador.getNombre()+" ("+jugador.getFicha()+") ha sido liberado del pozo!\n";
+				jugadoresLiberados += "El <font color="+jugador.getFicha().HTMLColor+">jugador "+jugador.getNombre()+" ("+jugador.getFicha()+")</font> ha sido liberado del pozo!\n";
 			}
 		}
 		return jugadoresLiberados;

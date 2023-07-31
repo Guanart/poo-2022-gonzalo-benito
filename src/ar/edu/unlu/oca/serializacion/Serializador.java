@@ -1,4 +1,4 @@
-package ar.edu.unlu.oca.services;
+package ar.edu.unlu.oca.serializacion;
 
 import java.io.EOFException;
 import java.io.FileInputStream;

@@ -8,6 +8,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.Map;
 
 import javax.swing.JOptionPane;
 
@@ -80,6 +81,14 @@ public class VistaGrafica implements IVista {
 				// TODO Auto-generated method stub
 			}
 		});
+		
+		this.vPrincipal.onClickRanking(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                verRanking();
+            }
+        });
+
 	}
 	
 	private void mostrarJuego() {
@@ -90,10 +99,6 @@ public class VistaGrafica implements IVista {
 	private void imprimirTexto(String texto) {
 		this.vPrincipal.imprimirDescripcion(texto);
 	}
-			
-	
-	
-	
 	
 	@Override
 	public void iniciar() {
@@ -109,14 +114,14 @@ public class VistaGrafica implements IVista {
 
 	@Override
 	public void verRanking() {
-		// TODO Auto-generated method stub
-		
+		Map<String, Integer> ranking = controlador.getRanking();
+		this.vPrincipal.verRanking(ranking);
 	}
 
 	@Override
 	public void partidaGuardada() {
-		// TODO Auto-generated method stub
-		
+		imprimirTexto("[*] EL SERVIDOR FUE APAGADO, Y LA PARTIDA HA SIDO GUARDADA. POR FAVOR, LEVANTAR EL SERVIDOR Y CONECTARSE NUEVAMENTE.");
+		this.vPrincipal.activarDado(false);
 	}
 
 	@Override

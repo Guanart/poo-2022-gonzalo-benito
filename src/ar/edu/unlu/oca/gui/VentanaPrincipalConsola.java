@@ -60,21 +60,22 @@ public class VentanaPrincipalConsola extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(new MigLayout("", "[grow][50px][::80px]", "[grow][]"));
 		
-		scrollPane = new JScrollPane();
-		contentPane.add(scrollPane, "cell 0 0 3 1,grow");
-		
 		txtHistorico = new JEditorPane();
 		txtHistorico.setContentType("text/html");
 		txtHistorico.setText("");
-		
 		txtHistorico.setEditable(false);
+		
+		scrollPane = new JScrollPane(txtHistorico);
+		contentPane.add(scrollPane, "cell 0 0 3 1,grow");
 		scrollPane.setViewportView(txtHistorico);
 		
+		// Scrollear automáticamente
 		DefaultCaret caret = (DefaultCaret) txtHistorico.getCaret();
 		caret.setUpdatePolicy(3);
 		
         verticalScrollBar = scrollPane.getVerticalScrollBar();
 		
+        // Input
 		textInput = new JTextField();
 		contentPane.add(textInput, "cell 0 1 2 1,growx");
 		textInput.setColumns(10);
@@ -83,7 +84,7 @@ public class VentanaPrincipalConsola extends JFrame {
 		contentPane.add(btnEnviar, "cell 2 1,growx");
 		
 		SwingUtilities.getRootPane(btnEnviar).setDefaultButton(btnEnviar);
-		addWindowListener( new WindowAdapter() {
+		addWindowListener(new WindowAdapter() {
 		    public void windowOpened( WindowEvent e ){
 		    	textInput.requestFocusInWindow();
 		    }

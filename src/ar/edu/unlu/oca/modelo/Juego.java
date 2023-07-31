@@ -10,7 +10,7 @@ import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import ar.edu.unlu.oca.controlador.Eventos;
-import ar.edu.unlu.oca.services.Serializador;
+import ar.edu.unlu.oca.serializacion.Serializador;
 import ar.edu.unlu.rmimvc.observer.ObservableRemoto;
 
 

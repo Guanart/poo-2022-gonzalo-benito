@@ -43,7 +43,7 @@ public class Controlador implements IControladorRemoto, Serializable {
 		Eventos evento = (Eventos) args;
 		switch(evento) {
 		case JUGADOR_AGREGADO:
-//			mostrarJugadores();
+			mostrarJugadores();
 			break;
 		case JUGADOR_ELIMINADO:
 			mostrarJugadores();
@@ -53,7 +53,6 @@ public class Controlador implements IControladorRemoto, Serializable {
 			mostrarDescripcionCasilla();
 			break;
 		case COMENZAR_PARTIDA:
-			// TODO: podría configurar algo especial al comienzo de la partida. Ej: orden de jugadores
 			actualizarTablero();
 			mostrarDescripcionCasilla();
 			mostrarTurno();

@@ -9,10 +9,10 @@ import javax.swing.JOptionPane;
 
 import ar.edu.unlu.oca.modelo.IJuego;
 import ar.edu.unlu.oca.modelo.Juego;
+import ar.edu.unlu.oca.serializacion.Serializador;
 import ar.edu.unlu.rmimvc.RMIMVCException;
 import ar.edu.unlu.rmimvc.Util;
 import ar.edu.unlu.rmimvc.servidor.Servidor;
-import ar.edu.unlu.oca.services.Serializador;
 
 public class OcaAppServidor {
 	public static final boolean DEV = true;
@@ -156,7 +156,7 @@ public class OcaAppServidor {
 		while (true) {			
 			guardarPartida = (String) JOptionPane.showInputDialog(
 					null, 
-					"¿Desea salir y guardar la partida en su estado actual?", "Guardar partida", 
+					"¿Salir y guardar la partida en su estado actual?", "Guardar partida", 
 					JOptionPane.QUESTION_MESSAGE,
 					null,
 //					new String[]{"Si", "No"},

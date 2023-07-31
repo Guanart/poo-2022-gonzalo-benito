@@ -22,14 +22,10 @@ import ar.edu.unlu.oca.modelo.casillas.Casilla;
 
 public class VistaConsola extends JFrame implements IVista {
 
-	/*
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private VentanaPrincipalConsola vPrincipal;
 	private Controlador controlador;
 	private Enum<?> estadoActual;;
-	// Durante la carga de jugadores, utilizo:
 	private EnumSet<Ficha> fichasDisponibles;
 	private int ficha;
 	private String nombreJugador;
@@ -216,11 +212,11 @@ public class VistaConsola extends JFrame implements IVista {
 		Map<String, Integer> ranking = controlador.getRanking();
 		println("------------------------------------------------");
 		println("[*] RANKING HISTÓRICO DE GANADORES");
-		print("<pre>"+"Jugador"+"\t\t"+"Partidas Ganadas"+"</pre>");
+		println("<pre>"+"Jugador"+"\t\t"+"Partidas Ganadas"+"</pre>");
 		for (Map.Entry<String, Integer> entry : ranking.entrySet()) {
             String clave = entry.getKey();
             int valor = entry.getValue();
-            print("<pre>"+clave+"\t"+"\t"+Integer.toString(valor)+"</pre>");
+            print("<pre>"+clave+"\t\t\t"+Integer.toString(valor)+"</pre>");
 		}
 	}
 	
@@ -250,13 +246,15 @@ public class VistaConsola extends JFrame implements IVista {
 	
 	@Override
 	public void mostrarJugadores(ArrayList<IJugador> jugadores) {
-		print("------------------------------------------------");
-		print("[*] LISTA DE JUGADORES");
-		for (IJugador jugador : jugadores) {
-			if(controlador.getJugador() != null && jugador.getFicha()==controlador.getJugador().getFicha()) {					
-				print("<font color="+jugador.getFicha().HTMLColor+">"+jugador.getNombre()+" ("+jugador.getFicha()+") (tú)</font>");
-			} else {				
-				print("<font color="+jugador.getFicha().HTMLColor+">"+jugador.getNombre()+" ("+jugador.getFicha()+")</font>");
+		if (estadoActual==OpcionesPartidaEnCurso.ESPERA) {			
+			print("------------------------------------------------");
+			print("[*] LISTA DE JUGADORES");
+			for (IJugador jugador : jugadores) {
+				if(controlador.getJugador() != null && jugador.getFicha()==controlador.getJugador().getFicha()) {					
+					print("<font color="+jugador.getFicha().HTMLColor+">"+jugador.getNombre()+" ("+jugador.getFicha()+") (tú)</font>");
+				} else {				
+					print("<font color="+jugador.getFicha().HTMLColor+">"+jugador.getNombre()+" ("+jugador.getFicha()+")</font>");
+				}
 			}
 		}
 	}
