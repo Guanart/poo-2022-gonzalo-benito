@@ -1,8 +1,10 @@
 package ar.edu.unlu.oca.modelo;
 
+import java.io.Serializable;
 import java.util.Random;
 
-class Dado {
+class Dado implements Serializable {
+	private static final long serialVersionUID = 5754244542039931041L;
 	private Random numeroAleatorio = new Random();
 	private int cara;
 	

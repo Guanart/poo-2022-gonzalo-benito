@@ -2,8 +2,8 @@ package ar.edu.unlu.oca.vista;
 
 enum OpcionesMenuPrincipal {
     INICIO (0, "[*] Bienvenido al Juego de la Oca!\n"),
-    NUEVA_PARTIDA (1, "1) Nueva partida"),
-    HISTORIAL_PARTIDAS (2, "2) Historial de partidas"),
+    ENTRAR_PARTIDA (1, "1) Entrar partida"),
+    HISTORIAL_PARTIDAS (2, "2) Ver ranking histórico 🏆"),
     SALIR (3, "3) Salir");
 
     public final int opcion;
