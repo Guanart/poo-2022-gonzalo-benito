@@ -9,7 +9,7 @@ Materia: Programación Orientada a Objetos
 
 # Vista Consola
 
-## Modo de uso
+## Modo de uso (desactualizado)
 
 ![image](https://user-images.githubusercontent.com/60377535/204913077-0921d733-bb89-4ef8-b201-637de6d65ff7.png)
 
@@ -24,7 +24,7 @@ Materia: Programación Orientada a Objetos
 
 
 
-# UML
+# UML (desactualizado)
 
 ![image](https://user-images.githubusercontent.com/60377535/204913122-7ad4433f-0f35-457b-b626-d2bcd00ecb6d.png)
 
