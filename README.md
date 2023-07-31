@@ -7,9 +7,9 @@ Año: 2022
 
 Materia: Programación Orientada a Objetos
 
-# Vista Consola
+# Vista Consola (desactualizado)
 
-## Modo de uso (desactualizado)
+## Modo de uso
 
 ![image](https://user-images.githubusercontent.com/60377535/204913077-0921d733-bb89-4ef8-b201-637de6d65ff7.png)
 
