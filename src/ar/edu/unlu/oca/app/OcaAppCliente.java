@@ -72,8 +72,8 @@ public class OcaAppCliente {
 					);
 		}
 		Controlador controlador = new Controlador();
-//		IVista vista = new VistaGrafica(controlador);
-		IVista vista = new VistaConsola(controlador);
+		IVista vista = new VistaGrafica(controlador);
+//		IVista vista = new VistaConsola(controlador);
 		Cliente c = new Cliente(ip, Integer.parseInt(port), ipServidor, Integer.parseInt(portServidor));
 		vista.iniciar();
 		try {

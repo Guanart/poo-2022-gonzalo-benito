@@ -38,11 +38,20 @@ public class VistaGrafica implements IVista {
 			public void actionPerformed(ActionEvent arg0) {
 				String usuario = vInicioSesion.getNombreUsuario().trim();
 				int ficha = vInicioSesion.getFicha();
-				if (!usuario.isBlank() && ficha != 0) {					
-					controlador.cargarJugador(usuario, ficha);
-					mostrarJuego();
-				} else {
-					JOptionPane.showMessageDialog(vInicioSesion, "Ingrese un nombre y seleccione una ficha", "Error", JOptionPane.WARNING_MESSAGE);
+				if (controlador.esPartidaComenzada()) {
+					if (!usuario.isBlank()) {					
+						controlador.entrarPartidaGuardada(usuario);
+						mostrarJuego();
+					} else {
+						JOptionPane.showMessageDialog(vInicioSesion, "Ingrese su nombre", "Error", JOptionPane.WARNING_MESSAGE);
+					}
+				} else {					
+					if (!usuario.isBlank() && ficha != 0) {					
+						controlador.cargarJugador(usuario, ficha);
+						mostrarJuego();
+					} else {
+						JOptionPane.showMessageDialog(vInicioSesion, "Ingrese un nombre y seleccione una ficha", "Error", JOptionPane.WARNING_MESSAGE);
+					}
 				}
 			}
 		});

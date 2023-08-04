@@ -102,7 +102,7 @@ public class VentanaPrincipalGrafica extends JFrame {
 		textPane = new JTextPane();
 		textPane.setContentType("text/html");
 		textPane.setEditable(false);
-		textPane.setBounds(660, 176, 196, 128);
+		textPane.setBounds(660, 176, 196, 135);
 		backgroundPanel.add(textPane);
 		
 		labelTurno = new JLabel("Turno de: ");
